@@ -21,9 +21,7 @@ public class AttackCsvConnector implements Connector {
 		try {
 			BufferedReader br = new BufferedReader(new InputStreamReader(FileIO.openFile("IZ_project/data/attacks.csv")));
 			if (br == null)
-				throw new Exception("Error opening file");
-			PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter("IZ_project/data/attacks1.csv")));
-
+			{throw new Exception("Error opening file");}
 			String line = "";
 			while ((line = br.readLine()) != null) {
 				if (line.startsWith("#") || (line.length() == 0))
