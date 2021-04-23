@@ -11,7 +11,7 @@ public class Test {
 		JIPEngine engine = new JIPEngine();
 		
 		engine.consultFile("program.pl");
-		JIPQuery query = engine.openSynchronousQuery("prethodnik(3,X)");
+		JIPQuery query = engine.openSynchronousQuery("all_attacks(L)");
 		
 		// pravila se mogu dodavati i tokom izvrsavanja (u runtime-u)
 		// assertz dodaje pravilo na kraj programa (aasserta dodaje na pocetak programa), na primer:

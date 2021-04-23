@@ -1,180 +1,183 @@
-%Configuration_Environment_Manipulation
-attack(Supply_Chain,_Configuration_Environment_Manipulation).
-parentOf(Configuration_Environment_Manipulation,Manipulating_Writeable_Configuration_Files).
-parentOf(Configuration_Environment_Manipulation,Manipulate_Registry_Information).
-parentOf(Configuration_Environment_Manipulation,Schema_Poisoning).
-parentOf(Configuration_Environment_Manipulation,Data_Injected_During_Configuration).
-parentOf(Configuration_Environment_Manipulation,Disable_Security_Software).
-prerequisites(Configuration_Environment_Manipulation,The_target_application_must_consult_external_files_or_configuration_controls_to_control_its_execution).
-related_weaknesses(Configuration_Environment_Manipulation,External_Control_of_System_or_Configuration_Setting).
-related_weaknesses(Configuration_Environment_Manipulation,Improper_Hardware_Lock_Protection_for_Security_Sensitive_Controls).
-related_weaknesses(Configuration_Environment_Manipulation,Hardware_Internal_or_Debug_Modes_Allow_Override_of_Locks).
+%'Configuration Environment Manipulation'
+attack('Supply Chain','Configuration Environment Manipulation').
+parentOf('Configuration Environment Manipulation','Manipulating Writeable Configuration Files').
+parentOf('Configuration Environment Manipulation','Manipulate Registry Information').
+parentOf('Configuration Environment Manipulation','Schema Poisoning').
+parentOf('Configuration Environment Manipulation','Data Injected During Configuration').
+parentOf('Configuration Environment Manipulation','Disable Security Software').
+prerequisites('Configuration Environment Manipulation','The target application must consult external files or configuration controls to control its execution').
+related_weaknesses('Configuration Environment Manipulation','External Control of System or Configuration Setting').
+related_weaknesses('Configuration Environment Manipulation','Improper Hardware Lock Protection for Security Sensitive Controls').
+related_weaknesses('Configuration Environment Manipulation','Hardware Internal or Debug Modes Allow Override of Locks').
 
-%Manipulating_Writeable_Configuration_Files
-attack(Configuration_Environment_Manipulation,Manipulating_Writeable_Configuration_Files).
-prerequisites(Manipulating_Writeable_Configuration_Files,Configuration_files_must_be_modifiable_by_the_attacker).
-related_weaknesses(Manipulating_Writeable_Configuration_Files,Acceptance_of_Extraneous_Untrusted_Data_With_Trusted_Data).
-related_weaknesses(Manipulating_Writeable_Configuration_Files,Improper_Control_of_Resource_Identifiers).
-related_weaknesses(Manipulating_Writeable_Configuration_Files,Improper_Neutralization_of_Special_Elements_used_in_a_Command).
-related_weaknesses(Manipulating_Writeable_Configuration_Files,Origin_Validation_Error).
-related_weaknesses(Manipulating_Writeable_Configuration_Files,Missing_Support_for_Integrity_Check).
-related_weaknesses(Manipulating_Writeable_Configuration_Files,Improper_Validation_of_Integrity_Check_Value).
-related_weaknesses(Manipulating_Writeable_Configuration_Files,OWASP_Top_Ten_2007_Category_A2_Injection_Flaws).
-prerequisites(Manipulating_Writeable_Configuration_Files,_Configuration_files_must_be_modifiable_by_the_attacker).
-mitigations(Manipulating_Writeable_Configuration_Files,Design,Enforce_principle_of_least_privilege).
-mitigations(Manipulating_Writeable_Configuration_Files,Design,Backup_copies_of_all_configuration_files).
-mitigations(Manipulating_Writeable_Configuration_Files,Implementation,Integrity_monitoring_for_configuration_files_).
-mitigations(Manipulating_Writeable_Configuration_Files,Implementation,Enforce_audit_logging_on_code_and_configuration_promotion_procedures).
-mitigations(Manipulating_Writeable_Configuration_Files,Implementation,Load_configuration_from_separate_process_and_memory_space_for_example_a_separate_physical_device_like_a_CD).
+%'Manipulating Writeable Configuration Files'
+attack('Configuration Environment Manipulation','Manipulating Writeable Configuration Files').
+prerequisites('Manipulating Writeable Configuration Files','Configuration files must be modifiable by the attacker').
+related_weaknesses('Manipulating Writeable Configuration Files','Acceptance of Extraneous Untrusted Data With Trusted Data').
+related_weaknesses('Manipulating Writeable Configuration Files','Improper Control of Resource Identifiers').
+related_weaknesses('Manipulating Writeable Configuration Files','Improper Neutralization of Special Elements used in a Command').
+related_weaknesses('Manipulating Writeable Configuration Files','Origin Validation Error').
+related_weaknesses('Manipulating Writeable Configuration Files','Missing Support for Integrity Check').
+related_weaknesses('Manipulating Writeable Configuration Files','Improper Validation of Integrity Check Value').
+related_weaknesses('Manipulating Writeable Configuration Files','OWASP Top Ten 2007 Category A2 Injection Flaws').
+prerequisites('Manipulating Writeable Configuration Files','Configuration files must be modifiable by the attacker').
+mitigations('Manipulating Writeable Configuration Files','Enforce principle of least privilege').
+mitigations('Manipulating Writeable Configuration Files','Backup copies of all configuration files').
+mitigations('Manipulating Writeable Configuration Files','Integrity monitoring for configuration files').
+mitigations('Manipulating Writeable Configuration Files','Enforce audit logging on code and configuration promotion procedures').
+mitigations('Manipulating Writeable Configuration Files','Load configuration from separate process and memory space for example a separate physical device like a CD').
 
-%Manipulate_Registry_Information
-attack(Configuration_Environment_Manipulation,Manipulate_Registry_Information).
-parentOf(Manipulate_Registry_Information,Poison_Web_Service_Registry).
-parentOf(Manipulate_Registry_Information,Modification_of_Registry_Run_Keys).
-parentOf(Manipulate_Registry_Information,Modification_of_Windows_Service_Configuration).
-prerequisites(Manipulate_Registry_Information,The_targeted_application_must_rely_on_values_stored_in_a_registry).
-prerequisites(Manipulate_Registry_Information,The_adversary_must_have_a_means_of_elevating_permissions_in_order_to_access_and_modify_registry_content_through_either_administrator_privileges_or_a_remote_access_tool_capable_of_editing_a_registry_through_an_API).
-related_weaknesses(Manipulate_Registry_Information,External_Control_of_System_or_Configuration_Setting).
-mitigations(Manipulate_Registry_Information,Ensure_proper_permissions_are_set_for_Registry_hives_to_prevent_users_from_modifying_keys).
-mitigations(Manipulate_Registry_Information,Employ_a_robust_and_layered_defensive_posture_in_order_to_prevent_unauthorized_users_on_your_system).
-mitigations(Manipulate_Registry_Information,Employ_robust_identification_and_audit_blocking_using_an_allowlist_of_applications_on_your_system).
-
-
-%Poison_Web_Service_Registry
-attack(Manipulate_Registry_Information,Poison_Web_Service_Registry).
-prerequisites(Poison_Web_Service_Registry,The_attacker_must_be_able_to_write_to_resources_or_redirect_access_to_the_service_registry).
-related_weaknesses(Poison_Web_Service_Registry,Improper_Authorization).
-related_weaknesses(Poison_Web_Service_Registry,Improper_Neutralization_of_Special_Elements_in_Output_Used_by_a_Downstream_Component).
-related_weaknesses(Poison_Web_Service_Registry,Protection_Mechanism_Failure).
-mitigations(Poison_Web_Service_Registry,Design,Enforce_principle_of_least_privilege).
-mitigations(Poison_Web_Service_Registry,Design,Harden_registry_server_and_file_access_permissions).
-mitigations(Poison_Web_Service_Registry,Implementation,Implement_communications_to_and_from_the_registry_using_secure_protocols).
-
-%Modification_of_Registry_Run_Keys
-attack(Manipulate_Registry_Information,Modification_of_Registry_Run_Keys).
-prerequisites(Modification_of_Registry_Run_Keys,The_adversary_must_have_gained_access_to_the_target_system_via_physical_or_logical_means_in_order_to_carry_out_this_attack).
-related_weaknesses(Modification_of_Registry_Run_Keys,External_Control_of_System_or_Configuration_Setting).
-mitigations(Modification_of_Registry_Run_Keys,Identify_programs_that_may_be_used_to_acquire_process_information_and_block_them_by_using_a_software_restriction_policy_or_tools_that_restrict_program_execution_by_using_a_process_allowlist).
-
-%Modification_of_Windows_Service_Configuration
-attack(Manipulate_Registry_Information,Modification_of_Windows_Service_Configuration).
-prerequisites(Modification_of_Windows_Service_Configuration,The_adversary_must_have_the_capability_to_write_to_the_Windows_Registry_on_the_targeted_system).
-related_weaknesses(Modification_of_Windows_Service_Configuration,Improper_Access_Control).
-mitigations(Modification_of_Windows_Service_Configuration,Ensure_proper_permissions_are_set_for_Registry_hives_to_prevent_users_from_modifying_keys_for_system_components_that_may_lead_to_privilege_escalation).
+%'Manipulate Registry Information'
+attack('Configuration Environment Manipulation','Manipulate Registry Information').
+parentOf('Manipulate Registry Information','Poison Web Service Registry').
+parentOf('Manipulate Registry Information','Modification of Registry Run Keys').
+parentOf('Manipulate Registry Information','Modification of Windows Service Configuration').
+prerequisites('Manipulate Registry Information','The targeted application must rely on values stored in a registry').
+prerequisites('Manipulate Registry Information','The adversary must have a means of elevating permissions in order to access and modify registry content through either administrator privileges or a remote access tool capable of editing a registry through an API').
+related_weaknesses('Manipulate Registry Information','External Control of System or Configuration Setting').
+mitigations('Manipulate Registry Information','Ensure proper permissions are set for Registry hives to prevent users from modifying keys').
+mitigations('Manipulate Registry Information','Employ a robust and layered defensive posture in order to prevent unauthorized users on your system').
+mitigations('Manipulate Registry Information','Employ robust identification and audit blocking using an allowlist of applications on your system').
 
 
-/*Schema Poisoning*/
-attack(Configuration_Environment_Manipulation,Schema_Poisoning).
-prerequisites(Schema_Poisoning,Some_level_of_access_to_modify_the_target_schema).
-prerequisites(Schema_Poisoning,The_schema_used_by_the_target_application_must_be_improperly_secured_against_unauthorized_modification_and_manipulation).
-mitigations(Schema_Poisoning,Design,Protect_the_schema_against_unauthorized_modification).
-mitigations(Schema_Poisoning,Implementation,For_applications_that_use_a_known_schema_use_a_local_copy_or_a_known_good_repository_instead_of_the_schema_reference_supplied_in_the_schema_document).
-mitigations(Schema_Poisoning,Implementation,For_applications_that_leverage_remote_schemas_use_the_HTTPS_protocol_to_prevent_modification_of_traffic_in_transit_and_to_avoid_unauthorized_modification).
+%'Poison Web Service Registry'
+attack('Manipulate Registry Information','Poison Web Service Registry').
+prerequisites('Poison Web Service Registry','The attacker must be able to write to resources or redirect access to the service registry').
+related_weaknesses('Poison Web Service Registry','Improper Authorization').
+related_weaknesses('Poison Web Service Registry','Improper Neutralization of Special Elements in Output Used by a Downstream Component').
+related_weaknesses('Poison Web Service Registry','Protection Mechanism Failure').
+mitigations('Poison Web Service Registry','Enforce principle of least privilege').
+mitigations('Poison Web Service Registry','Harden registry server and file access permissions').
+mitigations('Poison Web Service Registry','Implement communications to and from the registry using secure protocols').
+
+%'Modification of Registry Run Keys'
+attack('Manipulate Registry Information','Modification of Registry Run Keys').
+prerequisites('Modification of Registry Run Keys','The adversary must have gained access to the target system via physical or logical means in order to carry out this attack').
+related_weaknesses('Modification of Registry Run Keys','External Control of System or Configuration Setting').
+mitigations('Modification of Registry Run Keys','Identify programs that may be used to acquire process information and block them by using a software restriction policy or tools that restrict program execution by using a process allowlist').
+
+%'Modification of Windows Service Configuration'
+attack('Manipulate Registry Information','Modification of Windows Service Configuration').
+prerequisites('Modification of Windows Service Configuration','The adversary must have the capability to write to the Windows Registry on the targeted system').
+related_weaknesses('Modification of Windows Service Configuration','Improper Access Control').
+mitigations('Modification of Windows Service Configuration','Ensure proper permissions are set for Registry hives to prevent users from modifying keys for system components that may lead to privilege escalation').
+
+/*'Schema Poisoning'*/
+attack('Configuration Environment Manipulation','Schema Poisoning').
+prerequisites('Schema Poisoning','Some level of access to modify the target schema').
+prerequisites('Schema Poisoning','The schema used by the target application must be improperly secured against unauthorized modification and manipulation').
+mitigations('Schema Poisoning','Protect the schema against unauthorized modification').
+mitigations('Schema Poisoning','For applications that use a known schema use a local copy or a known good repository instead of the schema reference supplied in the schema document').
+mitigations('Schema Poisoning','For applications that leverage remote schemas use the HTTPS protocol to prevent modification of traffic in transit and to avoid unauthorized modification').
 /*Consequences????*/
 
-/*Data Injected During Configuration*/
-attack(Configuration_Environment_Manipulation,Data_Injected_During_Configuration).
-prerequisites(Data_Injected_During_Configuration,The_attacker_must_have_previously_compromised_the_victims_systems_or_have_physical_access_to_the_victims_systems).
-prerequisites(Data_Injected_During_Configuration,Advanced_knowledge_of_software_and_hardware_capabilities_of_a_manufacturers_product).
-mitigations(Data_Injected_During_Configuration,Ensure_that_proper_access_control_is_implemented_on_all_systems_to_prevent_unauthorized_access_to_system_files_and_processe).
+/*'Data Injected During Configuration'*/
+attack('Configuration Environment Manipulation','Data Injected During Configuration').
+prerequisites('Data Injected During Configuration','The attacker must have previously compromised the victims systems or have physical access to the victims systems').
+prerequisites('Data Injected During Configuration','Advanced knowledge of software and hardware capabilities of a manufacturers product').
+mitigations('Data Injected During Configuration','Ensure that proper access control is implemented on all systems to prevent unauthorized access to system files and processe').
 
-/*Disable Security Software*/
-attack(Configuration_Environment_Manipulation,Disable_Security_Software).
-prerequisites(Disable_Security_Software,The_adversary_must_have_the_capability_to_interact_with_the_configuration_of_the_targeted_system).
-mitigations(Disable_Security_Software,Ensure_proper_permissions_are_in_place_to_prevent_adversaries_from_altering_the_execution_status_of_security_tools).
-
-
-/*Manipulation During Distribution*/
-parentOf(Manipulation_During_Distribution,Malicious_Hardware_Componen_Replacement).
-parentOf(Manipulation_During_Distribution,Malicious_Software_Implanted).
-parentOf(Manipulation_During_Distribution,Rogue_Integration_Procedures).
-
-attack(Supply_Chain, Manipulation_During_Distribution).
-related_weaknesses(Manipulation_During_Distribution,Product_Released_in_Non_Release_Configuration).
-
-/*Malicious Hardware Component Replacement*/
-attack(Manipulation_During_Distribution,Malicious_Hardware_Component_Replacement).
-prerequisites(Malicious_Hardware_Component_Replacement,Physical_access_to_the_system_after_it_has_left_the_manufacturer_but_before_it_is_deployed_at_the_victim_location).
-
-/*Malicious Software Implanted*/
-attack(Manipulation_During_Distribution,Maliciou_Software_Implanted).
-prerequisites(Maliciou_Software_Implanted,Physical_access_to_the_system_after_it_has_left_the_manufacturer_but_before_it_is_deployed_at_the_victim_location).
-
-/*Modification_During_Manufacture*/
-attack(Supply_Chain,Modification_During_Manufacture).
-parentOf(Modification_During_Manufacture, Development_Alteration).
-parentOf(Modification_During_Manufacture, Design_Alteration).
-
-/*Development_Alteration*/
-parentOf(Development_Alteration, Malicious_Logic_Inserted_Into_Product_Software_by_Authorized_Developer).
-parentOf(Development_Alteration, Malicious_Logic_Insertion_into_Product_Software_via_Configuration_Management_Manipulation).
-parentOf(Development_Alteration, Malicious_Logic_Insertion_into_Product_Software_via_Inclusion_of_3rd_Party_Component_Dependency).
-parentOf(Development_Alteration, Infiltration_of_Software_Development_Environment).
-parentOf(Development_Alteration, Hardware_Component_Substitution_During_Baselining).
-parentOf(Development_Alteration, Counterfeit_Hardware_Component_Inserted_During_Product_Assembly).
-parentOf(Development_Alteration, Altered_Installed_BIOS).
-parentOf(Development_Alteration, Infiltration_of_Hardware_Development_Environment).
-parentOf(Development_Alteration, Open_Source_Libraries_Altered).
-parentOf(Development_Alteration, ASIC_With_Malicious_Functionality).
-
-prerequisites(Development_Alteration, Access_to_the_system_during_the_development_phase_to_alter_and_or_modify_software_and_hardware_components).
-mitigations(Development_Alteration, Assess_Software_and_software_components_during_development_and_prior_to_deployment_to_ensure_that_they_function_as_intended_and_without_any_malicious_functionality).
-
-prerequisites(Malicious_Logic_Inserted_Into_Product_Software_by_Authorized_Developer, Access_to_the_software_during_the_development_phase).
-mitigations(Malicious_Logic_Inserted_Into_Product_Software_by_Authorized_Developer, Assess_Software_and_software_components_during_development_and_prior_to_deployment_to_ensure_that_they_function_as_intended_and_without_any_malicious_functionality).
-
-prerequisites(Malicious_Logic_Insertion_into_Product_Software_via_Configuration_Management_Manipulation, Access_to_the_configuration_management_system_during_deployment_or_currently_deployed_at_a_victim_location).
-mitigations(Malicious_Logic_Insertion_into_Product_Software_via_Configuration_Management_Manipulation, Assess_Software_and_software_components_during_development_and_prior_to_deployment_to_ensure_that_they_function_as_intended_and_without_any_malicious_functionality).
-mitigations(Malicious_Logic_Insertion_into_Product_Software_via_Configuration_Management_Manipulation, Leverage_anti-virus_products_to_detect_and_quarantine_software_with_known_virus).
-
-prerequisites(Malicious_Logic_Insertion_into_Product_Software_via_Inclusion_of_3rd_Party_Component_Dependency, Access_to_the_software_during_the_development_phase).
-mitigations(Malicious_Logic_Insertion_into_Product_Software_via_Inclusion_of_3rd_Party_Component_Dependency, Assess_Software_and_software_components_during_development_and_prior_to_deployment_to_ensure_that_they_function_as_intended_and_without_any_malicious_functionality).
-
-prerequisites(Infiltration_of_Software_Development_Environment, The_victim_must_use_email_or_removable_media_from_systems_running_the_IDE).
-prerequisites(Infiltration_of_Software_Development_Environment, The_victim_must_have_a_system_running_exploitable_applications_and_or_a_vulnerable_configuration).
-prerequisites(Infiltration_of_Software_Development_Environment, The_attacker_must_have_working_knowledge_of_the_components_involved_in_IDE_and_infrastructure).
-
-prerequisites(Hardware_Component_Substitution_During_Baselining, The_attacker_need_physical_access_or_be_able_to_supply_malicious_hardware_components_to_the_product_development_facility).
-
-prerequisites(Counterfeit_Hardware_Component_Inserted_During_Product_Assembly, The_attacker_need_physical_access_or_be_able_to_supply_malicious_hardware_components_to_the_product_development_facility).
-
-prerequisites(Altered_Installed_BIOS, Advanced_knowledge_about_the_installed_target_system_design).
-prerequisites(Altered_Installed_BIOS, Advanced_knowledge_about_the_download_and_update_installation_processes).
-prerequisites(Altered_Installed_BIOS, Access_to_the_download_and_update_systems_used_to_deliver_BIOS_images).
+/*'Disable Security Software'*/
+attack('Configuration Environment Manipulation','Disable Security Software').
+prerequisites('Disable Security Software','The adversary must have the capability to interact with the configuration of the targeted system').
+mitigations('Disable Security Software','Ensure proper permissions are in place to prevent adversaries from altering the execution status of security tools').
 
 
-prerequisites(Infiltration_of_Hardware_Development_Environment, The_victim_must_use_email_or_removable_media_from_systems_running_the_IDE).
-prerequisites(Infiltration_of_Hardware_Development_Environment, The_victim_must_have_a_system_running_exploitable_applications_and_or_a_vulnerable_configuration).
-prerequisites(Infiltration_of_Hardware_Development_Environment, The_attacker_must_have_working_knowledge_of_the_components_involved_in_IDE_and_infrastructure).
+/*''Manipulation During Distribution''*/
+parentOf('Manipulation During Distribution','Malicious Hardware Componen Replacement').
+parentOf('Manipulation During Distribution','Malicious Software Implanted').
+parentOf('Manipulation During Distribution','Rogue Integration Procedures').
 
-prerequisites(Open_Source_Libraries_Altered,Access_to_the_open_source_code_base_being_used_by_the_manufacturer_in_system_being_developed_or_currently_deployed_at_victim_location).
+attack('Supply Chain', 'Manipulation During Distribution').
+related_weaknesses('Manipulation During Distribution','Product Released in Non Release Configuration').
 
-prerequisites(ASIC_With_Malicious_Functionality, Advanced_knowledge_about_ASIC_installed_within_the_target_system).
-prerequisites(ASIC_With_Malicious_Functionality, The_attacker_must_have_working_knowledge_of_the_components_involved_in_target_system_as_well_infrastructure_and_development_environment_of_the_manufacturer).
+/*'Malicious Hardware Component Replacement'*/
+attack('Manipulation During Distribution','Malicious Hardware Component Replacement').
+prerequisites('Malicious Hardware Component Replacement','Physical access to the system after it has left the manufacturer but before it is deployed at the victim location').
 
-/*Design_Alteration*/
-prerequisites(Design_Alteration, Access_to_system_design_documentation_prior_to_the_development_phase).
-prerequisites(Design_Alteration, Ability_to_forge_web_communications_to_deliver_modified_design_documentation).
-mitigations(Design_Alteration, Assess_design_documentation_during_development_and_prior_to_deployment_to_ensure_that_they_function_as_intended_and_without_any_malicious_functionality).
-mitigations(Design_Alteration, Ensure_that_design_documentation_is_saved_in_a_secure_location_and_has_proper_access_controls_set_in_place_to_avoid_unnecessary_modification).
-parentOf(Design_Alteration, Documentation_Alteration_to_Circumvent_Dial_down).
-parentOf(Design_Alteration, Documentation_Alteration_to_Produce_Under_performing_Systems).
-parentOf(Design_Alteration, Documentation_Alteration_to_Cause_Errors_in_System_Design).
-parentOf(Design_Alteration, Hardware_Design_Specifications_Are_Altered).
+/*'Malicious Software Implanted'*/
+attack('Manipulation During Distribution','Maliciou Software Implanted').
+prerequisites('Maliciou Software Implanted','Physical access to the system after it has left the manufacturer but before it is deployed at the victim location').
 
-prerequisites(Documentation_Alteration_to_Circumvent_Dial_down, Advanced_knowledge_of_internal_software_and_hardware_components_within_manufacturers_development_environment).
-prerequisites(Documentation_Alteration_to_Circumvent_Dial_down, Access_to_the_manufacturers_documentation).
+/*'Modification During Manufacture'*/
+attack('Supply Chain','Modification During Manufacture').
+parentOf('Modification During Manufacture', 'Development Alteration').
+parentOf('Modification During Manufacture', 'Design Alteration').
 
-prerequisites(Documentation_Alteration_to_Produce_Under_performing_Systems, Advanced_knowledge_of_software_and_hardware_capabilities_of_a_manufacturers_product).
-prerequisites(Documentation_Alteration_to_Produce_Under_performing_Systems, Access_to_the_manufacturers_documentation).
 
-prerequisites(Documentation_Alteration_to_Cause_Errors_in_System_Design, Advanced_knowledge_of_software_capabilities_of_a_manufacturers_product).
-prerequisites(Documentation_Alteration_to_Cause_Errors_in_System_Design, Access_to_the_manufacturers_documentation).
+/*'Development Alteration'*/
+parentOf('Development Alteration', 'Malicious Logic Inserted Into Product Software by Authorized Developer').
+parentOf('Development Alteration', 'Malicious Logic Insertion into Product Software via Configuration Management Manipulation').
+parentOf('Development Alteration', 'Malicious Logic Insertion into Product Software via Inclusion of 3rd Party Component Dependency').
+parentOf('Development Alteration', 'Infiltration of Software Development Environment').
+parentOf('Development Alteration', 'Hardware Component Substitution During Baselining').
+parentOf('Development Alteration', 'Counterfeit Hardware Component Inserted During Product Assembly').
+parentOf('Development Alteration', 'Altered Installed BIOS').
+parentOf('Development Alteration', 'Infiltration of Hardware Development Environment').
+parentOf('Development Alteration', 'Open Source Libraries Altered').
+parentOf('Development Alteration', 'ASIC With Malicious Functionality').
 
-prerequisites(Hardware_Design_Specifications_Are_Altered, Advanced_knowledge_of_hardware_capabilities_of_a_manufacturers_product).
-prerequisites(Hardware_Design_Specifications_Are_Altered, Access_to_the_manufacturers_documentation).
+prerequisites('Development Alteration', 'Access to the system during the development phase to alter and or modify software and hardware components').
+mitigations('Development Alteration', 'Assess Software and software components during development and prior to deployment to ensure that they function as intended and without any malicious functionality').
 
-/*Rogue Integration Procedures*/
-attack(Manipulation_During_Distribution,Rogue_Integration_Procedures).
-prerequisites(Rogue_Integration_Procedures,Physical_access_to_an_integration_facility_that_prepares_the_system_before_it_is_deployed_at_the_victim_location).
+prerequisites('Malicious Logic Inserted Into Product Software by Authorized Developer', 'Access to the software during the development phase').
+mitigations('Malicious Logic Inserted Into Product Software by Authorized Developer', 'Assess Software and software components during development and prior to deployment to ensure that they function as intended and without any malicious functionality').
 
+prerequisites('Malicious Logic Insertion into Product Software via Configuration Management Manipulation',' Access to the configuration management system during deployment or currently deployed at a victim location').
+mitigations('Malicious Logic Insertion into Product Software via Configuration Management Manipulation', 'Assess Software and software components during development and prior to deployment to ensure that they function as intended and without any malicious functionality').
+mitigations('Malicious Logic Insertion into Product Software via Configuration Management Manipulation', 'Leverage anti virus products to detect and quarantine software with known virus').
+
+prerequisites('Malicious Logic Insertion into Product Software via Inclusion of 3rd Party Component Dependency', 'Access to the software during the development phase').
+mitigations('Malicious Logic Insertion into Product Software via Inclusion of 3rd Party Component Dependency', 'Assess Software and software components during development and prior to deployment to ensure that they function as intended and without any malicious functionality').
+
+prerequisites('Infiltration of Software Development Environment', 'The victim must use email or removable media from systems running the IDE').
+prerequisites('Infiltration of Software Development Environment',' The victim must have a system running exploitable applications and or a vulnerable configuration').
+prerequisites('Infiltration of Software Development Environment', 'The attacker must have working knowledge of the components involved in IDE and infrastructure').
+
+prerequisites('Hardware Component Substitution During Baselining', 'The attacker need physical access or be able to supply malicious hardware components to the product development facility').
+
+prerequisites('Counterfeit Hardware Component Inserted During Product Assembly', 'The attacker need physical access or be able to supply malicious hardware components to the product development facility').
+
+prerequisites('Altered Installed BIOS', 'Advanced knowledge about the installed target system design').
+prerequisites('Altered Installed BIOS', 'Advanced knowledge about the download and update installation processes').
+prerequisites('Altered Installed BIOS', 'Access to the download and update systems used to deliver BIOS images').
+
+
+prerequisites('Infiltration of Hardware Development Environment', 'The victim must use email or removable media from systems running the IDE').
+prerequisites('Infiltration of Hardware Development Environment',' The victim must have a system running exploitable applications and or a vulnerable configuration').
+prerequisites('Infiltration of Hardware Development Environment', 'The attacker must have working knowledge of the components involved in IDE and infrastructure').
+
+prerequisites('Open Source Libraries Altered','Access to the open source code base being used by the manufacturer in system being developed or currently deployed at victim location').
+
+prerequisites('ASIC With Malicious Functionality', 'Advanced knowledge about ASIC installed within the target system').
+prerequisites('ASIC With Malicious Functionality', 'The attacker must have working knowledge of the components involved in target system as well infrastructure and development environment of the manufacturer').
+
+/*'Design Alteration'*/
+prerequisites('Design Alteration', 'Access to system design documentation prior to the development phase').
+prerequisites('Design Alteration', 'Ability to forge web communications to deliver modified design documentation').
+mitigations('Design Alteration',' Assess design documentation during development and prior to deployment to ensure that they function as intended and without any malicious functionality').
+mitigations('Design Alteration', 'Ensure that design documentation is saved in a secure location and has proper access controls set in place to avoid unnecessary modification').
+parentOf('Design Alteration', 'Documentation Alteration to Circumvent Dial down').
+parentOf('Design Alteration', 'Documentation Alteration to Produce Under performing Systems').
+parentOf('Design Alteration', 'Documentation Alteration to Cause Errors in System Design').
+parentOf('Design Alteration', 'Hardware Design Specifications Are Altered').
+
+prerequisites('Documentation Alteration to Circumvent Dial down', 'Advanced knowledge of internal software and hardware components within manufacturers development environment').
+prerequisites('Documentation Alteration to Circumvent Dial down', 'Access to the manufacturers documentation').
+
+prerequisites('Documentation Alteration to Produce Under performing Systems', 'Advanced knowledge of software and hardware capabilities of a manufacturers product').
+prerequisites('Documentation Alteration to Produce Under performing Systems', 'Access to the manufacturers documentation').
+
+prerequisites('Documentation Alteration to Cause Errors in System Design', 'Advanced knowledge of software capabilities of a manufacturers product').
+prerequisites('Documentation Alteration to Cause Errors in System Design', 'Access to the manufacturers documentation').
+
+prerequisites('Hardware Design Specifications Are Altered', 'Advanced knowledge of hardware capabilities of a manufacturers product').
+prerequisites('Hardware Design Specifications Are Altered', 'Access to the manufacturers documentation').
+
+/*'Rogue Integration Procedures'*/
+attack('Manipulation During Distribution','Rogue Integration Procedures').
+prerequisites('Rogue Integration Procedures','Physical access to an integration facility that prepares the system before it is deployed at the victim location').
+
+all_attacks(L) :- findall(L1,attack(M,L1),L).
+all_mitigations_for_attack(M,X) :- findall(L1,mitigations(M,L1),X).
+all_attacks_for_mitigation(N,L) :- findall(M,mitigations(M,N),L).
