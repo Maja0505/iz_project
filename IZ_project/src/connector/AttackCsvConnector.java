@@ -1,16 +1,17 @@
 package connector;
 
-import java.io.*;
-import java.net.URL;
-import java.util.Collection;
-import java.util.LinkedList;
-
 import model.AttackCaseDescription;
 import ucm.gaia.jcolibri.cbrcore.CBRCase;
 import ucm.gaia.jcolibri.cbrcore.CaseBaseFilter;
 import ucm.gaia.jcolibri.cbrcore.Connector;
 import ucm.gaia.jcolibri.exception.InitializingException;
 import ucm.gaia.jcolibri.util.FileIO;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.util.Collection;
+import java.util.LinkedList;
 
 public class AttackCsvConnector implements Connector {
 	
@@ -19,7 +20,7 @@ public class AttackCsvConnector implements Connector {
 		LinkedList<CBRCase> cases = new LinkedList<CBRCase>();
 		
 		try {
-			BufferedReader br = new BufferedReader(new InputStreamReader(FileIO.openFile("IZ_project/data/attacks.csv")));
+			BufferedReader br = new BufferedReader(new InputStreamReader(FileIO.openFile("./data/attacks.csv")));
 			if (br == null)
 			{throw new Exception("Error opening file");}
 			String line = "";
@@ -32,10 +33,12 @@ public class AttackCsvConnector implements Connector {
 
 				AttackCaseDescription attackCaseDescription = new AttackCaseDescription();
 				attackCaseDescription.setName(values[1].replaceAll("\"",""));
-				attackCaseDescription.setMitigations(values[15].replaceAll("\"",""));
-				attackCaseDescription.setPrerequisities((values[10]).replaceAll("\"",""));
-				
-
+				if(values.length > 15){
+					attackCaseDescription.setMitigations(values[15].replaceAll("\"",""));
+				}
+				if(values.length > 10){
+					attackCaseDescription.setPrerequisities((values[10]).replaceAll("\"",""));
+				}
 				
 				cbrCase.setDescription(attackCaseDescription);
 				cases.add(cbrCase);
