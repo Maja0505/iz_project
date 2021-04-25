@@ -229,7 +229,7 @@ attack('Provide Counterfeit Component').
 prerequisites('Provide Counterfeit Component', 'Advanced knowledge about the target system and sub-components.').
 
 attack('Malicious Gray Market Hardware').
-prerequisites('Malicious Gray Market Hardware', 'Physical access to a gray market reseller's hardware components supply, or the ability to appear as a gray market reseller to the victim's buyer.').
+prerequisites('Malicious Gray Market Hardware', 'Physical access to a gray market resellers hardware components supply, or the ability to appear as a gray market reseller to the victims buyer.').
 
 
 /*'Malicious Logic Insertion'*/
@@ -242,11 +242,11 @@ related_weaknesses('Malicious Logic Insertion', 'Execute Unauthorized Commands')
 
 attack('Infected Software').
 parentOf('Infected Software', 'Embed Virus into DLL').
-prerequisites('Infected Software', 'Access to the software currently deployed at a victim location. This access is often obtained by leveraging another attack pattern to gain permissions that the adversary wouldn't normally have.').
+prerequisites('Infected Software', 'Access to the software currently deployed at a victim location. This access is often obtained by leveraging another attack pattern to gain permissions that the adversary wouldnt normally have.').
 mitigations('Infected Software', 'Leverage anti-virus products to detect and quarantine software with known virus.').
 
 attack('Embed Virus into DLL').
-prerequisites('Embed Virus into DLL', 'Access to the software currently deployed at a victim location. This access is often obtained by leveraging another attack pattern to gain permissions that the adversary wouldn't normally have.').
+prerequisites('Embed Virus into DLL', 'Access to the software currently deployed at a victim location. This access is often obtained by leveraging another attack pattern to gain permissions that the adversary wouldnt normally have.').
 mitigations('Embed Virus into DLL', 'Leverage anti-virus products to detect and quarantine software with known virus.').
 
 attack('Infected Hardware').
