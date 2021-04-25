@@ -203,6 +203,75 @@ prerequisites('Hardware Design Specifications Are Altered', 'Access to the manuf
 attack('Rogue Integration Procedures').
 prerequisites('Rogue Integration Procedures','Physical access to an integration facility that prepares the system before it is deployed at the victim location').
 
+/*'Hardware Integrity Attack'*/
+attack('Hardware Integrity Attack').
+parentOf('Hardware Integrity Attack', 'Physically Hacking Hardware').
+parentOf('Hardware Integrity Attack', 'Malicious Hardware Update').
+prerequisites('Hardware Integrity Attack', 'Influence over the deployed system at a victim location.').
+
+attack('Physically Hacking Hardware').
+parentOf('Physically Hacking Hardware', 'Bypassing ATA Password Security').
+related_weaknesses('Physically Hacking Hardware', 'Improper Physical Access Control').
+
+attack('Bypassing ATA Password Security').
+prerequisites('Bypassing ATA Password Security', 'Access to the system containing the ATA Drive so that the drive can be physically removed from the system.').
+related_weaknesses('Bypassing ATA Password Security', 'Improper Authorization').
+
+attack('Malicious Hardware Update').
+parentOf('Malicious Hardware Update', 'Hardware Component Substitution').
+
+attack('Hardware Component Substitution').
+parentOf('Hardware Component Substitution', 'Provide Counterfeit Component').
+parentOf('Hardware Component Substitution', 'Malicious Gray Market Hardware').
+prerequisites('Hardware Component Substitution', 'Physical access to the system or the integration facility where hardware components are kept.').
+
+attack('Provide Counterfeit Component').
+prerequisites('Provide Counterfeit Component', 'Advanced knowledge about the target system and sub-components.').
+
+attack('Malicious Gray Market Hardware').
+prerequisites('Malicious Gray Market Hardware', 'Physical access to a gray market reseller's hardware components supply, or the ability to appear as a gray market reseller to the victim's buyer.').
+
+
+/*'Malicious Logic Insertion'*/
+attack('Malicious Logic Insertion').
+parentOf('Malicious Logic Insertion', 'Infected Software').
+parentOf('Malicious Logic Insertion', 'Infected Hardware').
+parentOf('Malicious Logic Insertion', 'Infected Memory').
+prerequisites('Malicious Logic Insertion', 'Access to the component currently deployed at a victim location.').
+related_weaknesses('Malicious Logic Insertion', 'Execute Unauthorized Commands').
+
+attack('Infected Software').
+parentOf('Infected Software', 'Embed Virus into DLL').
+prerequisites('Infected Software', 'Access to the software currently deployed at a victim location. This access is often obtained by leveraging another attack pattern to gain permissions that the adversary wouldn't normally have.').
+mitigations('Infected Software', 'Leverage anti-virus products to detect and quarantine software with known virus.').
+
+attack('Embed Virus into DLL').
+prerequisites('Embed Virus into DLL', 'Access to the software currently deployed at a victim location. This access is often obtained by leveraging another attack pattern to gain permissions that the adversary wouldn't normally have.').
+mitigations('Embed Virus into DLL', 'Leverage anti-virus products to detect and quarantine software with known virus.').
+
+attack('Infected Hardware').
+parentOf('Infected Hardware', '	Altered Component Firmware').
+prerequisites('Infected Hardware', 'Access to the hardware currently deployed at a victim location.').
+
+attack('Altered Component Firmware').
+prerequisites('Altered Component Firmware', 'Advanced knowledge about the installed target system design.').
+prerequisites('Altered Component Firmware', 'Advanced knowledge about the download and update installation processes.').
+prerequisites('Altered Component Firmware', 'Access to the download and update system(s) used to deliver BIOS images.').
+
+attack('Infected Memory').
+parentOf('Infected Memory', 'USB Memory Attacks').
+parentOf('Infected Memory', 'Flash Memory Attacks').
+mitigations('Infected Memory', 'Leverage anti-virus products to detect stop operations with known virus.').
+
+attack('USB Memory Attacks').
+prerequisites('USB Memory Attacks', 'Some level of physical access to the device being attacked.').
+prerequisites('USB Memory Attacks', 'Information pertaining to the target organization on how to best execute a USB Drop Attack.').
+mitigations('USB Memory Attacks', 'Ensure that proper, physical system access is regulated to prevent an adversary from physically connecting a malicious USB device themself.').
+mitigations('USB Memory Attacks', 'Use anti-virus and anti-malware tools which can prevent malware from executing if it finds its way onto a target system. Additionally, make sure these tools are regularly updated to contain up-to-date virus and malware signatures.').
+mitigations('USB Memory Attacks', 'Do not connect untrusted USB devices to systems connected on an organizational network. Additionally, use an isolated testing machine to validate untrusted devices and confirm malware does not exist.').
+
+attack('Flash Memory Attacks').
+
 all_attacks(L) :- findall(L1,attack(L1),L).
 all_mitigations_for_attack(M,X) :- findall(L1,mitigations(M,L1),X).
 all_attacks_for_mitigation(N,L) :- findall(M,mitigations(M,N),L).
