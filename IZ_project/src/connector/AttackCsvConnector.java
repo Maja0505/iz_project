@@ -33,11 +33,11 @@ public class AttackCsvConnector implements Connector {
 
 				AttackCaseDescription attackCaseDescription = new AttackCaseDescription();
 				attackCaseDescription.setName(values[1].replaceAll("\"",""));
-				if(values.length > 15){
-					attackCaseDescription.setMitigations(values[15].replaceAll("\"",""));
+				if(values.length > 8){
+					attackCaseDescription.setMitigations(values[8].replaceAll("\"",""));
 				}
-				if(values.length > 10){
-					attackCaseDescription.setPrerequisities((values[10]).replaceAll("\"",""));
+				if(values.length > 5){
+					attackCaseDescription.setPrerequisities((values[5]).replaceAll("\"",""));
 				}
 				
 				cbrCase.setDescription(attackCaseDescription);
