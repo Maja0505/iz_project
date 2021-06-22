@@ -3,13 +3,7 @@ package cbr;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.StringTokenizer;
+import java.util.*;
 
 
 import connector.AttackCsvConnector;
@@ -68,8 +62,32 @@ public class CbrApplication implements StandardCBRApplication {
 		simConfig = new NNConfig(); // KNN configuration
 		simConfig.setDescriptionSimFunction(new Average());  // global similarity function = average
 		
-		// simConfig.addMapping(new Attribute("attribute", CaseDescription.class), new Interval(5));
+		simConfig.addMapping(new Attribute("alteredDocumentation", AttackCaseDescription.class), new Equal());
+		simConfig.addMapping(new Attribute("errorsInSoftware", AttackCaseDescription.class), new Equal());
+		simConfig.addMapping(new Attribute("suspiciousDataModifications", AttackCaseDescription.class), new Equal());
+		simConfig.addMapping(new Attribute("recentlyReceivedUpdates", AttackCaseDescription.class), new Equal());
+		simConfig.addMapping(new Attribute("recentlyUsedRemovableMedia", AttackCaseDescription.class), new Equal());
+		simConfig.addMapping(new Attribute("denialOfService", AttackCaseDescription.class), new Equal());
+		simConfig.addMapping(new Attribute("suspiciousCodeChanges", AttackCaseDescription.class), new Equal());
+		simConfig.addMapping(new Attribute("softwareInDevelopmentPhase", AttackCaseDescription.class), new Equal());
+		simConfig.addMapping(new Attribute("softwareInDeploymentPhase", AttackCaseDescription.class), new Equal());
+		simConfig.addMapping(new Attribute("unauthenticatedPhysicalAccessRecently", AttackCaseDescription.class), new Equal());
 		// TODO
+
+		TableSimilarity typeTableSimilarity = new TableSimilarity(Arrays.asList(new String[]{"hardware","software","both"}));
+		typeTableSimilarity.setSimilarity("hardware","software",0.0);
+		typeTableSimilarity.setSimilarity("hardware","both",1.0);
+		typeTableSimilarity.setSimilarity("hardware","both",1.0);
+
+		simConfig.addMapping(new Attribute("type", AttackCaseDescription.class), typeTableSimilarity);
+
+		TableSimilarity typicalSeverityTableSimilarity = new TableSimilarity(Arrays.asList(new String[]{"Low ","Medium ","High "}));
+		typicalSeverityTableSimilarity.setSimilarity("Low ","Medium ",0.7);
+		typicalSeverityTableSimilarity.setSimilarity("Low ","High ",0.2);
+		typicalSeverityTableSimilarity.setSimilarity("Medium ","High ",0.7);
+
+		simConfig.addMapping(new Attribute("typicalSeverity", AttackCaseDescription.class), typicalSeverityTableSimilarity);
+
 
 		// Equal - returns 1 if both individuals are equal, otherwise returns 0
 		// Interval - returns the similarity of two number inside an interval: sim(x,y) = 1-(|x-y|/interval)
@@ -97,8 +115,8 @@ public class CbrApplication implements StandardCBRApplication {
 	public CBRCaseBase preCycle() throws ExecutionException {
 		_caseBase.init(_connector);
 		Collection<CBRCase> cases = _caseBase.getCases();
-		for (CBRCase c: cases)
-			System.out.println(c.getDescription());
+		//for (CBRCase c: cases)
+		//	System.out.println(c.getDescription());
 		return _caseBase;
 	}
 
