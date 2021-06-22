@@ -1,0 +1,109 @@
+
+FUNCTION_BLOCK vulnerability
+
+VAR_INPUT               // ulazne varijable
+	access_vector : REAL;
+	access_complexity : REAL;
+	authentication : REAL;
+	confidentiality : REAL;
+	integrity : REAL;
+	availability : REAL;
+END_VAR
+
+VAR_OUTPUT              // izlazne varijable
+	risk : REAL;
+END_VAR
+
+FUZZIFY access_vector
+	TERM local := (0, 1) (7, 0);
+	TERM network := (5, 0) (10, 1);
+END_FUZZIFY
+
+FUZZIFY access_complexity
+	TERM low := (0,1) (1, 1) (2, 1) (8, 0);
+	TERM high := (6, 0) (10, 1);
+END_FUZZIFY
+
+FUZZIFY authentication
+	TERM not_required := (0, 1) (6, 0);
+	TERM required := (5, 0) (10, 1);
+END_FUZZIFY
+
+FUZZIFY confidentiality
+	TERM none := (0, 1) (3, 0);
+	TERM partial := (2, 0) (5, 1) (6,1) (8, 0);
+	TERM complete := (7, 0) (10, 1);
+END_FUZZIFY
+
+FUZZIFY integrity
+	TERM none := (0, 1) (3, 0);
+	TERM partial := (2, 0) (5, 1) (6,1) (8, 0);
+	TERM complete := (7, 0) (10, 1);
+END_FUZZIFY
+
+FUZZIFY availability
+	TERM none := (0, 1) (3, 0);
+	TERM partial := (2, 0) (5, 1) (6,1) (8, 0);
+	TERM complete := (7, 0) (10, 1);
+END_FUZZIFY
+
+
+DEFUZZIFY risk
+	TERM low := (0,0) (0, 1) (30, 0);
+	TERM medium := (20, 0) (40, 1) (60, 0);
+	TERM high := (50, 0) (70, 1) (90,0);
+	TERM very_high := (80, 0) (100, 1) (120,0);
+	METHOD : COG;		// 'Center Of Gravity' odn. centar mase (koristi se i MM odn. mean max)
+	DEFAULT := 0;		// podrazumevana vrednost (ukoliko nijedno pravilo nije aktivirano)
+END_DEFUZZIFY
+
+RULEBLOCK blok1
+	AND : MIN;			// za konjunkciju se koristi minimum (samim tim sa za disjunkciju koristi maksimum)
+	ACT : MIN;			// za zaključivanje (implikaciju) je izabran minimum (Mamdani implikacija) (osim MIN koristi se i PROD)
+	ACCU : MAX;			// za kompoziciju je izabran maksimum (osim MAX koristi se i SUM)
+
+	RULE 1 : IF access_vector IS local AND access_complexity IS high AND authentication IS required THEN risk IS low;
+	RULE 2 : IF access_vector IS local AND access_complexity IS high AND authentication IS not_required THEN risk IS medium;
+	RULE 3 : IF access_vector IS local AND access_complexity IS low AND authentication IS required THEN risk IS low;
+	RULE 4 : IF access_vector IS local AND access_complexity IS low AND authentication IS not_required THEN risk IS high;
+	RULE 5 : IF access_vector IS network AND access_complexity IS high AND authentication IS required THEN risk IS low;
+	RULE 6 : IF access_vector IS network AND access_complexity IS high AND authentication IS not_required THEN risk IS medium;
+	RULE 7 : IF access_vector IS network AND access_complexity IS low AND authentication IS required THEN risk IS medium;
+	RULE 8 : IF access_vector IS network AND access_complexity IS low AND authentication IS not_required THEN risk IS very_high;
+
+	RULE 9 : IF confidentiality IS none AND availability IS none AND integrity IS none THEN risk IS low;
+	RULE 10 : IF confidentiality IS none AND availability IS none AND integrity IS partial THEN risk IS low;
+	RULE 11 : IF confidentiality IS none AND availability IS none AND integrity IS complete THEN risk IS medium;
+	RULE 12 : IF confidentiality IS none AND availability IS partial AND integrity IS none THEN risk IS low;
+	RULE 13 : IF confidentiality IS none AND availability IS partial AND integrity IS partial THEN risk IS medium;
+	RULE 14 : IF confidentiality IS none AND availability IS partial AND integrity IS complete THEN risk IS medium;
+	RULE 15 : IF confidentiality IS none AND availability IS complete AND integrity IS none THEN risk IS medium;
+	RULE 16 : IF confidentiality IS none AND availability IS complete AND integrity IS partial THEN risk IS medium;
+	RULE 17 : IF confidentiality IS none AND availability IS complete AND integrity IS complete THEN risk IS high;
+
+	RULE 18 : IF confidentiality IS partial AND availability IS none AND integrity IS none THEN risk IS low;
+	RULE 19 : IF confidentiality IS partial AND availability IS none AND integrity IS partial THEN risk IS medium;
+	RULE 20 : IF confidentiality IS partial AND availability IS none AND integrity IS complete THEN risk IS medium;
+	RULE 21 : IF confidentiality IS partial AND availability IS partial AND integrity IS none THEN risk IS medium;
+	RULE 22 : IF confidentiality IS partial AND availability IS partial AND integrity IS partial THEN risk IS medium;
+	RULE 23 : IF confidentiality IS partial AND availability IS partial AND integrity IS complete THEN risk IS high;
+	RULE 24 : IF confidentiality IS partial AND availability IS complete AND integrity IS none THEN risk IS medium;
+	RULE 25 : IF confidentiality IS partial AND availability IS complete AND integrity IS partial THEN risk IS high;
+	RULE 26 : IF confidentiality IS partial AND availability IS complete AND integrity IS complete THEN risk IS very_high;
+
+	RULE 27 : IF confidentiality IS complete AND availability IS none AND integrity IS none THEN risk IS medium;
+	RULE 28 : IF confidentiality IS complete AND availability IS none AND integrity IS partial THEN risk IS medium;
+	RULE 29 : IF confidentiality IS complete AND availability IS none AND integrity IS complete THEN risk IS high;
+	RULE 30 : IF confidentiality IS complete AND availability IS partial AND integrity IS none THEN risk IS medium;
+	RULE 31 : IF confidentiality IS complete AND availability IS partial AND integrity IS partial THEN risk IS medium;
+	RULE 32 : IF confidentiality IS complete AND availability IS partial AND integrity IS complete THEN risk IS high;
+	RULE 33 : IF confidentiality IS complete AND availability IS complete AND integrity IS none THEN risk IS high;
+	RULE 34 : IF confidentiality IS complete AND availability IS complete AND integrity IS partial THEN risk IS very_high;
+	RULE 35 : IF confidentiality IS complete AND availability IS complete AND integrity IS complete THEN risk IS very_high;
+	
+
+
+END_RULEBLOCK
+
+END_FUNCTION_BLOCK
+

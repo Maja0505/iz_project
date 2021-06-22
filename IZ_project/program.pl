@@ -235,9 +235,14 @@ mitigations_for_type('Hardware','Ensure that proper, physical system access is r
 mitigations_for_symptoms('Recently used removable media','Ensure that proper, physical system access is regulated to prevent an adversary from physically connecting a malicious USB device themself.').
 mitigations_for_symptoms('Physical access required','Do not connect untrusted USB devices to systems connected on an organizational network. Additionally, use an isolated testing machine to validate untrusted devices and confirm malware does not exist.').
 mitigations_for_symptoms('Suspicious code changes',' Assess design documentation during development and prior to deployment to ensure that they function as intended and without any malicious functionality').
+mitigations_for_symptoms('Sofware in deployment phase','Assess documentation during development and prior to deployment to ensure that they function as intended and without any malicious functionality').
+mitigations_for_symptoms('Altered documentation','Assess design documentation development and prior to deployment to ensure that they function as intended and without any malicious functionality').
+mitigations_for_symptoms('Software in development phase','Assess design documentatithat they function as intended and without any malicious functionality').
+mitigations_for_symptoms('Recently received updates','Use anti-virus and anti-malware tools which can prevent malware from executing if it finds its way onto a target system.').
 
 
-is_mitigations_empty(Attack) :- findall(L1,mitigations(Attack,L1),X),X==[].
+
+is_mitigations_empty(A) :- findall(L1,mitigations(A,L1),X),X==[].
 description_exists(attack,L1) :- attack_description(attack,L1).
 find_description_for_attack(A,X):- attack_description(A,X).
 find_type_for_attack(A,X):- attack_type(A,X). 
