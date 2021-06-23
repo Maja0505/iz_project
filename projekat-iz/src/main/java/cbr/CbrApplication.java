@@ -4,7 +4,10 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.*;
+
+import com.example.demo.DemoApplication;
 import connector.AttackCsvConnector;
+import dto.AttackDTO;
 import model.AttackCaseDescription;
 import similarity.TableSimilarity;
 import ucm.gaia.jcolibri.casebase.LinealCaseBase;
@@ -19,6 +22,7 @@ import ucm.gaia.jcolibri.method.retrieve.RetrievalResult;
 import ucm.gaia.jcolibri.method.retrieve.selection.SelectCases;
 
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 public class CbrApplication implements StandardCBRApplication {
 	
@@ -27,7 +31,10 @@ public class CbrApplication implements StandardCBRApplication {
 
 	NNConfig simConfig;  /** KNN configuration */
 
-	Collection<RetrievalResult> results;
+	public static Collection<RetrievalResult> results;
+	String result="";
+	String[] case_description;
+	private AttackDTO attackDTO;
 	
 	public void configure() throws ExecutionException {
 		_connector =  new AttackCsvConnector();
@@ -83,13 +90,6 @@ public class CbrApplication implements StandardCBRApplication {
 
 	}
 
-	public Collection<RetrievalResult> returnResults(){
-		System.out.println("Retrieved cases:");
-		for (RetrievalResult nse : this.results)
-			System.out.println(nse.get_case().getDescription() + " -> " + nse.getEval());
-		return this.results;
-	}
-
 	public void postCycle() throws ExecutionException {
 	}
 
@@ -99,6 +99,34 @@ public class CbrApplication implements StandardCBRApplication {
 		//for (CBRCase c: cases)
 		//	System.out.println(c.getDescription());
 		return _caseBase;
+	}
+	public Collection<RetrievalResult> returnResults(){
+		System.out.println("Retrieved cases:");
+		this.attackDTO=new AttackDTO();
+		for (RetrievalResult nse : this.results){
+			this.result = nse.get_case().getDescription().toString().split("\\{")[1];
+			this.case_description= this.result.split(",");
+			this.attackDTO.setName(this.case_description[0].replaceAll("name='","").replaceAll(" '",""));
+			this.attackDTO.setName(this.case_description[0].replaceAll("name='","").replaceAll(" '",""));
+			this.attackDTO.setDescription(this.case_description[14].replaceAll("description='","").replaceAll("'",""));
+			this.attackDTO.setEvaluation(nse.getEval());
+			if(this.case_description[13].replaceAll("type='","").replaceAll("'","").trim().equals("both")){
+				this.attackDTO.setType("Hardware,Software");
+			}
+			else if(this.case_description[13].replaceAll("type='","").replaceAll("'","").trim().equals("hardware")){
+				this.attackDTO.setType("Hardware");
+			}
+			else
+			{
+				this.attackDTO.setType("Software");
+			}
+			this.attackDTO.setLikelihoodOfAttack(this.case_description[6].replaceAll("likelihoodOfAttack=","").replaceAll("'","").trim());
+			DemoApplication.attackDTO=this.attackDTO;
+		}
+
+
+
+		return this.results;
 	}
 
 
