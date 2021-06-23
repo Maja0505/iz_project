@@ -234,10 +234,10 @@ mitigations_for_type('Hardware','Ensure that proper, physical system access is r
 
 mitigations_for_symptoms('Recently used removable media','Ensure that proper, physical system access is regulated to prevent an adversary from physically connecting a malicious USB device themself.').
 mitigations_for_symptoms('Physical access required','Do not connect untrusted USB devices to systems connected on an organizational network. Additionally, use an isolated testing machine to validate untrusted devices and confirm malware does not exist.').
-mitigations_for_symptoms('Suspicious code changes','Ensure that proper access control is implemented on all systems to prevent unauthorized access to system files and processe').
-mitigations_for_symptoms('Sofware in deployment phase','Identify programs that may be used to acquire process information and block them by using a software restriction policy or tools that restrict program execution by using a process allowlist').
-mitigations_for_symptoms('Altered documentation',' Assess design documentation during development and prior to deployment to ensure that they function as intended and without any malicious functionality').
-mitigations_for_symptoms('Software in development phase','Harden registry server and file access permissions').
+mitigations_for_symptoms('Suspicious code changes',' Assess design documentation during development and prior to deployment to ensure that they function as intended and without any malicious functionality').
+mitigations_for_symptoms('Sofware in deployment phase','Assess documentation during development and prior to deployment to ensure that they function as intended and without any malicious functionality').
+mitigations_for_symptoms('Altered documentation','Assess design documentation development and prior to deployment to ensure that they function as intended and without any malicious functionality').
+mitigations_for_symptoms('Software in development phase','Assess design documentatithat they function as intended and without any malicious functionality').
 mitigations_for_symptoms('Recently received updates','Use anti-virus and anti-malware tools which can prevent malware from executing if it finds its way onto a target system.').
 
 
@@ -248,4 +248,10 @@ all_mitigations_for_attack(A,X) :- findall(L1,mitigations(A,L1),X).
 mitigation_for_attack_type(T,M) :- findall(L1,mitigations_for_type(T,L1),M).
 mitigation_for_attack_symptom(T,M) :- findall(L1,mitigations_for_symptoms(T,L1),M).
 
-  
+
+
+contains(S,[H|T]):- member(H,S),contains(S,T).
+
+
+
+

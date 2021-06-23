@@ -5,6 +5,8 @@ import com.ugos.jiprolog.engine.JIPEngine;
 import com.ugos.jiprolog.engine.JIPQuery;
 import com.ugos.jiprolog.engine.JIPTerm;
 import com.ugos.jiprolog.engine.JIPVariable;
+import dto.AttackDTO;
+import dto.AttackSymptomsDTO;
 import dto.FuzzyInputDto;
 import model.AttackCaseDescription;
 import net.sourceforge.jFuzzyLogic.FIS;
@@ -13,6 +15,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.*;
 import ucm.gaia.jcolibri.cbraplications.StandardCBRApplication;
 import ucm.gaia.jcolibri.cbrcore.CBRQuery;
+import ucm.gaia.jcolibri.method.retrieve.RetrievalResult;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 import unbbayes.*;
 import unbbayes.example.TextMode;
@@ -30,6 +36,10 @@ import java.util.Scanner;
 @SpringBootApplication
 @RestController
 public class DemoApplication {
+    Map<String, JIPQuery> map1 = new HashMap<String,JIPQuery>();
+    public static AttackDTO attackDTO;
+
+
 
     public static void main(String[] args) {
         SpringApplication.run(DemoApplication.class, args);
@@ -53,27 +63,63 @@ public class DemoApplication {
         return  (double)risk/100;
     }
 
-    @GetMapping("/prolog")
-    public String prolog(@RequestParam(value = "myName", defaultValue = "World") String name) {
-
+    @GetMapping("/findMitigationsForAttack")
+    public List<String> getMitigationsForAttack(@RequestParam(value = "attackName") String attackName) {
+        List<String> mitigations = new ArrayList<>();
         JIPEngine engine = new JIPEngine();
 
         engine.consultFile("program.pl");
-        JIPQuery query_pl = engine.openSynchronousQuery("all_attacks(L)");
+        JIPQuery query_pl = engine.openSynchronousQuery("all_mitigations_for_attack('"+attackName+"',X)");
 
         // pravila se mogu dodavati i tokom izvrsavanja (u runtime-u)
         // assertz dodaje pravilo na kraj programa (aasserta dodaje na pocetak programa), na primer:
         // engine.assertz(engine.getTermParser().parseTerm("sledbenik(X,Y) :- X is Y+1."));
 
         JIPTerm solution;
-        while ( (solution = query_pl.nextSolution()) != null) {
-            System.out.println("solution: " + solution);
-            for (JIPVariable var: solution.getVariables()) {
-                System.out.println(var.getName() + "=" + var.getValue());
+
+            String result = query_pl.nextSolution().getVariables()[0].toString().replaceAll("'\\.'\\('", "").replaceAll(",\\[]\\)\\)\\)\\)", "")
+                    .replaceAll("'", "").replaceAll(",\\[]\\)", "").replaceAll("\\)", "").replaceAll("\\.,", "\\.;");
+
+            if(result.equals("[]")){
+                   JIPQuery query_pl1 = engine.openSynchronousQuery("find_description_for_attack('"+attackName+"',X)");
+                    JIPTerm solution1= query_pl1.nextSolution();
+                   if(solution1!= null) {
+                       System.out.println("gde ne treba");
+                       String result1 = solution1.getVariables()[0].toString().replaceAll("'\\.'\\('", "").replaceAll(",\\[]\\)\\)\\)\\)", "")
+                               .replaceAll("'", "").replaceAll(",\\[]\\)", "").replaceAll("\\)", "").replaceAll("\\.,", "\\.;").replaceAll("\\[]", "");
+                       String[] descriptionsForAttack = result1.split(",");
+
+                       for (int i=0;i<descriptionsForAttack.length;i++) {
+                           System.out.println(descriptionsForAttack[i]);
+                           JIPQuery query_pl2 = engine.openSynchronousQuery("mitigation_for_attack_symptom('" + descriptionsForAttack[i].trim() + "',X)");
+                           String result2 = query_pl2.nextSolution().getVariables()[0].toString().replaceAll("'\\.'\\('", "").replaceAll(",\\[]\\)\\)\\)\\)", "")
+                                   .replaceAll("'", "").replaceAll(",\\[]\\)", "").replaceAll("\\)", "").replaceAll("\\.,", "\\.;").replaceAll("\\[]", "");
+                           mitigations.add(result2);
+                       }
+                   }
+                   else{
+                       JIPQuery query_pl3 = engine.openSynchronousQuery("find_type_for_attack('"+ attackName +"',X)");
+                       String type = query_pl3.nextSolution().getVariables()[0].toString().replaceAll("'\\.'\\('", "").replaceAll(",\\[]\\)\\)\\)\\)", "")
+                               .replaceAll("'", "").replaceAll(",\\[]\\)", "").replaceAll("\\)", "").replaceAll("\\.,", "\\.;").replaceAll("\\[]", "");
+
+                       JIPQuery query_pl4 = engine.openSynchronousQuery("mitigation_for_attack_type('"+ type +"',X)");
+                       String result4 = query_pl4.nextSolution().getVariables()[0].toString().replaceAll("'\\.'\\('", "").replaceAll(",\\[]\\)\\)\\)\\)", "")
+                               .replaceAll("'", "").replaceAll(",\\[]\\)", "").replaceAll("\\)", "").replaceAll("\\.,", "\\.;").replaceAll("\\[]", "");
+
+                       mitigations.add(result4);
+                   }
+
+            }else{
+                mitigations= Arrays.stream(result.split(",")).collect(Collectors.toList());
             }
-        }
 
 
+
+        return mitigations;
+    }
+
+    @PutMapping("/findAttackForSymptoms")
+    public AttackDTO findAttackForSymptoms(@RequestBody AttackSymptomsDTO attackSymptomsDTO) {
         StandardCBRApplication recommender = new CbrApplication();
 
         try {
@@ -84,19 +130,26 @@ public class DemoApplication {
 
             CBRQuery query = new CBRQuery();
             AttackCaseDescription caseDescription = new AttackCaseDescription();
-
-            // TODO
+            caseDescription.setType(attackSymptomsDTO.getType().toLowerCase(Locale.ROOT));
+            caseDescription.setUnauthenticatedPhysicalAccessRecently(attackSymptomsDTO.isUnauthenticatedPhysicalAccessRecently());
+            caseDescription.setSoftwareInDeploymentPhase(attackSymptomsDTO.isSoftwareInDeploymentPhase());
+            caseDescription.setSoftwareInDevelopmentPhase(attackSymptomsDTO.isSoftwareInDevelopmentPhase());
+            caseDescription.setTypicalSeverity(attackSymptomsDTO.getTypicalSeverity());
+            caseDescription.setSuspiciousCodeChanges(attackSymptomsDTO.isSuspiciousCodeChanges());
+            caseDescription.setDenialOfService(attackSymptomsDTO.isDenialOfService());
+            caseDescription.setRecentlyUsedRemovableMedia(attackSymptomsDTO.isRecentlyUsedRemovableMedia());
+            caseDescription.setAlteredDocumentation(attackSymptomsDTO.isAlteredDocumentation());
+            caseDescription.setErrorsInSoftware(attackSymptomsDTO.isErrorsInSoftware());
+            caseDescription.setRecentlyReceivedUpdates(attackSymptomsDTO.isRecentlyReceivedUpdates());
 
             query.setDescription( caseDescription );
 
             recommender.cycle(query);
-
             recommender.postCycle();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        return String.format("Hello %s!", name);
+        return attackDTO;
     }
 
     @GetMapping("/bayes")

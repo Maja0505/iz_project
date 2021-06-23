@@ -1,16 +1,11 @@
-package model;
+package dto;
 
-import ucm.gaia.jcolibri.cbrcore.Attribute;
-import ucm.gaia.jcolibri.cbrcore.CaseComponent;
-
-public class AttackCaseDescription implements CaseComponent {
-    private String name;
+public class AttackSymptomsDTO {
     private boolean alteredDocumentation;
     private boolean errorsInSoftware;
     private boolean suspiciousDataModifications;
     private boolean recentlyReceivedUpdates;
     private boolean recentlyUsedRemovableMedia;
-    private String likelihoodOfAttack;
     private String typicalSeverity;
     private boolean denialOfService;
     private boolean suspiciousCodeChanges;
@@ -18,36 +13,29 @@ public class AttackCaseDescription implements CaseComponent {
     private boolean softwareInDeploymentPhase;
     private boolean unauthenticatedPhysicalAccessRecently;
     private String type;
-    private String description;
-    private String mitigations;
 
-    public AttackCaseDescription() {}
+    public AttackSymptomsDTO() {}
 
-    public AttackCaseDescription(String name, boolean alteredDocumentation, boolean errorsInSoftware, boolean suspiciousDataModifications, boolean recentlyReceivedUpdates, boolean recentlyUsedRemovableMedia, String likelihoodOfAttack, String typicalSeverity, boolean denialOfService, boolean suspiciousCodeChanges, boolean softwareInDevelopmentPhase, boolean softwareInDeploymentPhase, boolean unauthenticatedPhysicalAccessRecently, String type, String description, String mitigations) {
-        this.name = name;
+    public AttackSymptomsDTO(boolean alteredDocumentation, boolean errorsInSoftware, boolean suspiciousDataModifications, boolean recentlyReceivedUpdates, boolean recentlyUsedRemovableMedia, String typicalSeverity, boolean denialOfService, boolean suspiciousCodeChanges, boolean softwareInDevelopmentPhase, boolean softwareInDeploymentPhase, boolean unauthenticatedPhysicalAccessRecently) {
         this.alteredDocumentation = alteredDocumentation;
         this.errorsInSoftware = errorsInSoftware;
         this.suspiciousDataModifications = suspiciousDataModifications;
         this.recentlyReceivedUpdates = recentlyReceivedUpdates;
         this.recentlyUsedRemovableMedia = recentlyUsedRemovableMedia;
-        this.likelihoodOfAttack = likelihoodOfAttack;
         this.typicalSeverity = typicalSeverity;
         this.denialOfService = denialOfService;
         this.suspiciousCodeChanges = suspiciousCodeChanges;
         this.softwareInDevelopmentPhase = softwareInDevelopmentPhase;
         this.softwareInDeploymentPhase = softwareInDeploymentPhase;
         this.unauthenticatedPhysicalAccessRecently = unauthenticatedPhysicalAccessRecently;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
         this.type = type;
-        this.description = description;
-        this.mitigations = mitigations;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public boolean isAlteredDocumentation() {
@@ -90,15 +78,7 @@ public class AttackCaseDescription implements CaseComponent {
         this.recentlyUsedRemovableMedia = recentlyUsedRemovableMedia;
     }
 
-    public String isLikelihoodOfAttack() {
-        return likelihoodOfAttack;
-    }
-
-    public void setLikelihoodOfAttack(String likelihoodOfAttack) {
-        this.likelihoodOfAttack = likelihoodOfAttack;
-    }
-
-    public String isTypicalSeverity() {
+    public String getTypicalSeverity() {
         return typicalSeverity;
     }
 
@@ -144,56 +124,5 @@ public class AttackCaseDescription implements CaseComponent {
 
     public void setUnauthenticatedPhysicalAccessRecently(boolean unauthenticatedPhysicalAccessRecently) {
         this.unauthenticatedPhysicalAccessRecently = unauthenticatedPhysicalAccessRecently;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getMitigations() {
-        return mitigations;
-    }
-
-    public void setMitigations(String mitigations) {
-        this.mitigations = mitigations;
-    }
-
-    @Override
-    public String toString() {
-        return "AttackCaseDescription{" +
-                "name='" + name + '\'' +
-                ", alteredDocumentation=" + alteredDocumentation +
-                ", errorsInSoftware=" + errorsInSoftware +
-                ", suspiciousDataModifications=" + suspiciousDataModifications +
-                ", recentlyReceivedUpdates=" + recentlyReceivedUpdates +
-                ", recentlyUsedRemovableMedia=" + recentlyUsedRemovableMedia +
-                ", likelihoodOfAttack=" + likelihoodOfAttack +
-                ", typicalSeverity=" + typicalSeverity +
-                ", denialOfService=" + denialOfService +
-                ", suspiciousCodeChanges=" + suspiciousCodeChanges +
-                ", softwareInDevelopmentPhase=" + softwareInDevelopmentPhase +
-                ", softwareInDeploymentPhase=" + softwareInDeploymentPhase +
-                ", unauthenticatedPhysicalAccessRecently=" + unauthenticatedPhysicalAccessRecently +
-                ", type='" + type + '\'' +
-                ", description='" + description + '\'' +
-                ", mitigations='" + mitigations + '\'' +
-                '}';
-    }
-
-    @Override
-    public Attribute getIdAttribute() {
-        return null;
     }
 }

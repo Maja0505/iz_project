@@ -15,19 +15,21 @@ public class Test {
 
 		JIPEngine engine = new JIPEngine();
 
-		engine.consultFile("program.pl");
-		JIPQuery query_pl = engine.openSynchronousQuery("all_attacks(L)");
+		engine.consultFile("IZ_project/program.pl");
+		JIPQuery query_pl = engine.openSynchronousQuery("is_mitigations_empty('USB Memory Attacks')");
 
 		// pravila se mogu dodavati i tokom izvrsavanja (u runtime-u)
 		// assertz dodaje pravilo na kraj programa (aasserta dodaje na pocetak programa), na primer:
 		// engine.assertz(engine.getTermParser().parseTerm("sledbenik(X,Y) :- X is Y+1."));
 
 		JIPTerm solution;
-		while ( (solution = query_pl.nextSolution()) != null) {
-			System.out.println("solution: " + solution);
-			for (JIPVariable var: solution.getVariables()) {
-				System.out.println(var.getName() + "=" + var.getValue());
-			}
+		if(query_pl.nextSolution()==null){
+			System.out.println("result empty");
+		}
+		else {
+			String result = query_pl.nextSolution().getVariables()[0].toString().replaceAll("'\\.'\\('", "").replaceAll(",\\[]\\)\\)\\)\\)", "")
+					.replaceAll("'", "").replaceAll(",\\[]\\)", "").replaceAll("\\)", "").replaceAll("\\.,", "\\.;");
+			System.out.println(result);
 		}
 
 
@@ -41,6 +43,18 @@ public class Test {
 
 			CBRQuery query = new CBRQuery();
 			AttackCaseDescription caseDescription = new AttackCaseDescription();
+			caseDescription.setType("hardware");
+			caseDescription.setUnauthenticatedPhysicalAccessRecently(false);
+			caseDescription.setSoftwareInDeploymentPhase(false);
+			caseDescription.setSoftwareInDevelopmentPhase(false);
+			caseDescription.setTypicalSeverity("Low");
+			caseDescription.setSuspiciousCodeChanges(false);
+			caseDescription.setDenialOfService(false);
+			caseDescription.setRecentlyUsedRemovableMedia(true);
+			caseDescription.setAlteredDocumentation(false);
+			caseDescription.setErrorsInSoftware(true);
+			caseDescription.setRecentlyReceivedUpdates(false);
+
 
 			// TODO
 

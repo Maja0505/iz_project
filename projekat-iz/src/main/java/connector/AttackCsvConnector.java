@@ -20,7 +20,7 @@ public class AttackCsvConnector implements Connector {
 		LinkedList<CBRCase> cases = new LinkedList<CBRCase>();
 		
 		try {
-			BufferedReader br = new BufferedReader(new InputStreamReader(FileIO.openFile("./data/attacks.csv")));
+			BufferedReader br = new BufferedReader(new InputStreamReader(FileIO.openFile("attacks.csv")));
 			if (br == null)
 			{throw new Exception("Error opening file");}
 			String line = "";
@@ -31,15 +31,26 @@ public class AttackCsvConnector implements Connector {
 
 				CBRCase cbrCase = new CBRCase();
 
+
 				AttackCaseDescription attackCaseDescription = new AttackCaseDescription();
-				attackCaseDescription.setName(values[1].replaceAll("\"",""));
-				if(values.length > 8){
-					attackCaseDescription.setMitigations(values[8].replaceAll("\"",""));
-				}
-				if(values.length > 5){
-					attackCaseDescription.setPrerequisities((values[5]).replaceAll("\"",""));
-				}
-				
+				attackCaseDescription.setName(values[0].replaceAll("\"",""));
+				attackCaseDescription.setAlteredDocumentation(Boolean.parseBoolean(values[1]));
+				attackCaseDescription.setErrorsInSoftware(Boolean.parseBoolean(values[2]));
+				attackCaseDescription.setSuspiciousDataModifications(Boolean.parseBoolean(values[3]));
+				attackCaseDescription.setRecentlyReceivedUpdates(Boolean.parseBoolean(values[4]));
+				attackCaseDescription.setRecentlyUsedRemovableMedia(Boolean.parseBoolean(values[5]));
+				attackCaseDescription.setLikelihoodOfAttack(values[6]);
+				attackCaseDescription.setTypicalSeverity(values[7]);
+				attackCaseDescription.setDenialOfService(Boolean.parseBoolean(values[8]));
+				attackCaseDescription.setSuspiciousCodeChanges(Boolean.parseBoolean(values[9]));
+				attackCaseDescription.setSoftwareInDevelopmentPhase(Boolean.parseBoolean(values[10]));
+				attackCaseDescription.setSoftwareInDeploymentPhase(Boolean.parseBoolean(values[11]));
+				attackCaseDescription.setUnauthenticatedPhysicalAccessRecently(Boolean.parseBoolean(values[12]));
+				attackCaseDescription.setType(values[13]);
+				attackCaseDescription.setDescription(values[14]);
+				attackCaseDescription.setMitigations(values[15]);
+
+
 				cbrCase.setDescription(attackCaseDescription);
 				cases.add(cbrCase);
 			}
