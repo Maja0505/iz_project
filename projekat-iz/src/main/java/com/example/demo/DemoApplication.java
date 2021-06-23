@@ -10,12 +10,14 @@ import dto.AttackSymptomsDTO;
 import dto.FuzzyInputDto;
 import dto.NewAttackDto;
 import model.Attack;
+import dto.*;
 import model.AttackCaseDescription;
 import net.sourceforge.jFuzzyLogic.FIS;
 import org.apache.jena.query.*;
 import org.apache.jena.rdf.model.Literal;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ucm.gaia.jcolibri.cbraplications.StandardCBRApplication;
 import ucm.gaia.jcolibri.cbrcore.CBRQuery;
@@ -32,6 +34,7 @@ import unbbayes.prs.bn.ProbabilisticNode;
 import unbbayes.util.Debug;
 import unbbayes.util.extension.bn.inference.IInferenceAlgorithm;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -250,9 +253,13 @@ public class DemoApplication {
         return attackDTO;
     }
 
-    @GetMapping("/bayes")
-    public String bayes(){
+    @PutMapping("/bayes")
+    public List<BayesOutputDTO> bayes(@RequestBody BayesSymptomsDTO bayesSymptomsDTO, HttpServletResponse response){
+        response.setContentType("application/json");
+        System.out.println("Usaoooooo");
         unbbayes.prs.bn.ProbabilisticNetwork net = null;
+
+        List<BayesOutputDTO> ret = new ArrayList<BayesOutputDTO>();
 
         try {
             unbbayes.io.BaseIO io = new unbbayes.io.NetIO(); // open a .net file
@@ -282,20 +289,20 @@ public class DemoApplication {
 
         PrintAllInputNodes(inputNodes);
 
-        InputNodeProbabilities(inputNodes);
+        LoadBayesProbabilities(inputNodes, bayesSymptomsDTO);
 
         PrintAllInputNodes(inputNodes);
 
         PrintAllOutputNodes(outputNodes);
 
         // insert evidence (finding)
-        int indexFirstNode = 0;
+       /* int indexFirstNode = 0;
         ProbabilisticNode findingNode = (ProbabilisticNode)nodeList.get(indexFirstNode);
         int indexFirstState = 0;
         findingNode.addFinding(indexFirstState);
 
         System.out.println();
-
+        */
         // propagate evidence
         try {
             algorithm.propagate();
@@ -307,7 +314,42 @@ public class DemoApplication {
         System.out.println("\nNodes after calculating probabilities and sorting!!\n");
         //print updated (posterior) node's marginal probabilities
         PrintAllOutputNodes(sortedNodeList);
-        return "a";
+
+        for(int i = 0; i < 3; i++){
+            BayesOutputDTO temp = new BayesOutputDTO(sortedNodeList.get(i).getName(), ((ProbabilisticNode) sortedNodeList.get(i)).getMarginalAt(0));
+            ret.add(temp);
+        }
+        return ret;
+    }
+
+    private void LoadBayesProbabilities(List<Node> inputNodes, BayesSymptomsDTO symptoms){
+        for(Node node : inputNodes){
+            if(node.getDescription() == "Suspicious_code_changes"){
+                SetNodeProbabilityWithTwoStatesD(node, symptoms.getSuspicious_code_changes());
+            }else if(node.getDescription() == "Suspicious_data_modifications") {
+                SetNodeProbabilityWithTwoStatesD(node, symptoms.getSuspicious_data_modifications());
+            }else if(node.getDescription() == "Company_size"){
+                SetNodeProbabilityWithThreeStates(node, symptoms.getCompany_size());
+            }else if(node.getDescription() == "Software_in_development_phase"){
+                SetNodeProbabilityWithTwoStatesD(node, symptoms.getSoftware_in_development_phase());
+            }else if(node.getDescription() == "Software_in_deployment_phase"){
+                SetNodeProbabilityWithTwoStatesD(node, symptoms.getSoftware_in_deployment_phase());
+            }else if(node.getDescription() == "Using_open_source_or_3rd_party_components"){
+                SetNodeProbabilityWithTwoStatesD(node, symptoms.getUsing_open_source_or_3rd_party_components());
+            }else if(node.getDescription() == "Unauthorized_physical_access_occured_recently"){
+                SetNodeProbabilityWithTwoStatesD(node, symptoms.getUnauthorized_physical_access_occured_recently());
+            }else if(node.getDescription() == "Recently_received_updates"){
+                SetNodeProbabilityWithTwoStatesD(node, symptoms.getRecently_received_updates());
+            }else if(node.getDescription() == "Recently_used_removable_media"){
+                SetNodeProbabilityWithTwoStatesD(node, symptoms.getRecently_used_removable_media());
+            }else if(node.getDescription() == "Unefectivness_or_errors_in_software"){
+                SetNodeProbabilityWithTwoStatesD(node, symptoms.getUnefectivness_or_errors_in_software());
+            }else if(node.getDescription() == "Denial_of_service"){
+                SetNodeProbabilityWithTwoStatesD(node, symptoms.getDenial_of_service());
+            }else if(node.getDescription() == "Altered_documentation"){
+                SetNodeProbabilityWithTwoStatesD(node, symptoms.getAltered_documentation());
+            }
+        }
     }
 
 
@@ -396,6 +438,25 @@ public class DemoApplication {
         return node;
     }
     private Node SetNodeProbabilityWithThreeStates(Node node, int index){
+        for (int i = 0; i < node.getStatesSize(); i++) {
+            if(i == index)
+                ((ProbabilisticNode) node).setMarginalAt(i, 1);
+            else
+                ((ProbabilisticNode) node).setMarginalAt(i, 0);
+        }
+        return node;
+    }
+    private Node SetNodeProbabilityWithTwoStatesD(Node node, boolean checked){
+        if(checked == true) {
+            ((ProbabilisticNode) node).setMarginalAt(0, 1);
+            ((ProbabilisticNode) node).setMarginalAt(1, 0);
+        }else{
+            ((ProbabilisticNode) node).setMarginalAt(0, 0);
+            ((ProbabilisticNode) node).setMarginalAt(1, 1);
+        }
+        return node;
+    }
+    private Node SetNodeProbabilityWithThreeStatesD(Node node, int index){
         for (int i = 0; i < node.getStatesSize(); i++) {
             if(i == index)
                 ((ProbabilisticNode) node).setMarginalAt(i, 1);
