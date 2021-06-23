@@ -130,7 +130,7 @@ attack_description('Open Source Libraries Altered',['Software in development pha
 
 attack('ASIC With Malicious Functionality').
 attack_type('ASIC With Malicious Functionality','Hardware').
-attack_description('ASIC With Malicious Functionality',['Software in development phase','Sofware in deployment phase','Physical access required','Recently received updates']).
+attack_description('ASIC With Malicious Functionality',['Recently used removable media','Physical access required','Suspicious code changes','Sofware in deployment phase','Altered documentation','Software in development phase','Recently received updates']).
 
 
 
@@ -242,12 +242,16 @@ mitigations_for_symptoms('Recently received updates','Use anti-virus and anti-ma
 
 
 
-is_mitigations_empty(A) :- findall(L1,mitigations(A,L1),X),X==[].
-description_exists(attack,L1) :- attack_description(attack,L1).
 find_description_for_attack(A,X):- attack_description(A,X).
 find_type_for_attack(A,X):- attack_type(A,X). 
 all_mitigations_for_attack(A,X) :- findall(L1,mitigations(A,L1),X).
 mitigation_for_attack_type(T,M) :- findall(L1,mitigations_for_type(T,L1),M).
 mitigation_for_attack_symptom(T,M) :- findall(L1,mitigations_for_symptoms(T,L1),M).
 
-  
+
+
+contains(S,[H|T]):- member(H,S),contains(S,T).
+
+
+
+

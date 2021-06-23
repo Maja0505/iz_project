@@ -5,13 +5,12 @@ import com.ugos.jiprolog.engine.JIPEngine;
 import com.ugos.jiprolog.engine.JIPQuery;
 import com.ugos.jiprolog.engine.JIPTerm;
 import com.ugos.jiprolog.engine.JIPVariable;
-import dto.AttackDTO;
-import dto.AttackSymptomsDTO;
-import dto.FuzzyInputDto;
+import dto.*;
 import model.AttackCaseDescription;
 import net.sourceforge.jFuzzyLogic.FIS;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ucm.gaia.jcolibri.cbraplications.StandardCBRApplication;
 import ucm.gaia.jcolibri.cbrcore.CBRQuery;
@@ -19,6 +18,20 @@ import ucm.gaia.jcolibri.method.retrieve.RetrievalResult;
 
 import java.util.*;
 import java.util.stream.Collectors;
+
+import unbbayes.*;
+import unbbayes.example.TextMode;
+import unbbayes.prs.Node;
+import unbbayes.prs.bn.JunctionTreeAlgorithm;
+import unbbayes.prs.bn.ProbabilisticNode;
+import unbbayes.util.Debug;
+import unbbayes.util.extension.bn.inference.IInferenceAlgorithm;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 @SpringBootApplication
 @RestController
@@ -74,14 +87,14 @@ public class DemoApplication {
                        System.out.println("gde ne treba");
                        String result1 = solution1.getVariables()[0].toString().replaceAll("'\\.'\\('", "").replaceAll(",\\[]\\)\\)\\)\\)", "")
                                .replaceAll("'", "").replaceAll(",\\[]\\)", "").replaceAll("\\)", "").replaceAll("\\.,", "\\.;").replaceAll("\\[]", "");
-                       List<String> descriptionsForAttack = Arrays.stream(result1.split(",")).collect(Collectors.toList());
+                       String[] descriptionsForAttack = result1.split(",");
 
-                       for (String symptom : descriptionsForAttack) {
-                           JIPQuery query_pl2 = engine.openSynchronousQuery("mitigation_for_attack_symptom('" + symptom + "',X)");
+                       for (int i=0;i<descriptionsForAttack.length;i++) {
+                           System.out.println(descriptionsForAttack[i]);
+                           JIPQuery query_pl2 = engine.openSynchronousQuery("mitigation_for_attack_symptom('" + descriptionsForAttack[i].trim() + "',X)");
                            String result2 = query_pl2.nextSolution().getVariables()[0].toString().replaceAll("'\\.'\\('", "").replaceAll(",\\[]\\)\\)\\)\\)", "")
                                    .replaceAll("'", "").replaceAll(",\\[]\\)", "").replaceAll("\\)", "").replaceAll("\\.,", "\\.;").replaceAll("\\[]", "");
                            mitigations.add(result2);
-
                        }
                    }
                    else{
@@ -139,4 +152,214 @@ public class DemoApplication {
         return attackDTO;
     }
 
+    @PutMapping("/bayes")
+    public List<BayesOutputDTO> bayes(@RequestBody BayesSymptomsDTO bayesSymptomsDTO, HttpServletResponse response){
+        response.setContentType("application/json");
+        System.out.println("Usaoooooo");
+        unbbayes.prs.bn.ProbabilisticNetwork net = null;
+
+        List<BayesOutputDTO> ret = new ArrayList<BayesOutputDTO>();
+
+        try {
+            unbbayes.io.BaseIO io = new unbbayes.io.NetIO(); // open a .net file
+            net = (unbbayes.prs.bn.ProbabilisticNetwork)io.load(new File("./data/attacksv2.net"));
+        } catch (Exception e) {
+            Debug.println(TextMode.class, "Error loading Bayesian Network", e);
+            System.exit(1);
+        }
+
+        // prepare the algorithm to compile network
+        IInferenceAlgorithm algorithm = new JunctionTreeAlgorithm();
+        algorithm.setNetwork(net);
+        algorithm.run();
+
+        System.out.println("\nNodes calculating before probabilities!!\n");
+        // print node's prior marginal probabilities
+        List<Node> nodeList = net.getNodes();
+        List<Node> inputNodes = new ArrayList<Node>();
+        List<Node> outputNodes = new ArrayList<Node>();
+
+        for (Node node : nodeList) {
+            if(node.getDescription().startsWith("S"))
+                inputNodes.add(node);
+            else
+                outputNodes.add(node);
+        }
+
+        PrintAllInputNodes(inputNodes);
+
+        LoadBayesProbabilities(inputNodes, bayesSymptomsDTO);
+
+        PrintAllInputNodes(inputNodes);
+
+        PrintAllOutputNodes(outputNodes);
+
+        // insert evidence (finding)
+       /* int indexFirstNode = 0;
+        ProbabilisticNode findingNode = (ProbabilisticNode)nodeList.get(indexFirstNode);
+        int indexFirstState = 0;
+        findingNode.addFinding(indexFirstState);
+
+        System.out.println();
+        */
+        // propagate evidence
+        try {
+            algorithm.propagate();
+        } catch (Exception exc) {
+            System.out.println(exc.getMessage());
+        }
+
+        List<Node> sortedNodeList = SortNodeProbabilities(outputNodes);
+        System.out.println("\nNodes after calculating probabilities and sorting!!\n");
+        //print updated (posterior) node's marginal probabilities
+        PrintAllOutputNodes(sortedNodeList);
+
+        for(int i = 0; i < 3; i++){
+            BayesOutputDTO temp = new BayesOutputDTO(sortedNodeList.get(i).getName(), ((ProbabilisticNode) sortedNodeList.get(i)).getMarginalAt(0));
+            ret.add(temp);
+        }
+        return ret;
     }
+
+    private void LoadBayesProbabilities(List<Node> inputNodes, BayesSymptomsDTO symptoms){
+        for(Node node : inputNodes){
+            if(node.getDescription() == "Suspicious_code_changes"){
+                SetNodeProbabilityWithTwoStatesD(node, symptoms.getSuspicious_code_changes());
+            }else if(node.getDescription() == "Suspicious_data_modifications") {
+                SetNodeProbabilityWithTwoStatesD(node, symptoms.getSuspicious_data_modifications());
+            }else if(node.getDescription() == "Company_size"){
+                SetNodeProbabilityWithThreeStates(node, symptoms.getCompany_size());
+            }else if(node.getDescription() == "Software_in_development_phase"){
+                SetNodeProbabilityWithTwoStatesD(node, symptoms.getSoftware_in_development_phase());
+            }else if(node.getDescription() == "Software_in_deployment_phase"){
+                SetNodeProbabilityWithTwoStatesD(node, symptoms.getSoftware_in_deployment_phase());
+            }else if(node.getDescription() == "Using_open_source_or_3rd_party_components"){
+                SetNodeProbabilityWithTwoStatesD(node, symptoms.getUsing_open_source_or_3rd_party_components());
+            }else if(node.getDescription() == "Unauthorized_physical_access_occured_recently"){
+                SetNodeProbabilityWithTwoStatesD(node, symptoms.getUnauthorized_physical_access_occured_recently());
+            }else if(node.getDescription() == "Recently_received_updates"){
+                SetNodeProbabilityWithTwoStatesD(node, symptoms.getRecently_received_updates());
+            }else if(node.getDescription() == "Recently_used_removable_media"){
+                SetNodeProbabilityWithTwoStatesD(node, symptoms.getRecently_used_removable_media());
+            }else if(node.getDescription() == "Unefectivness_or_errors_in_software"){
+                SetNodeProbabilityWithTwoStatesD(node, symptoms.getUnefectivness_or_errors_in_software());
+            }else if(node.getDescription() == "Denial_of_service"){
+                SetNodeProbabilityWithTwoStatesD(node, symptoms.getDenial_of_service());
+            }else if(node.getDescription() == "Altered_documentation"){
+                SetNodeProbabilityWithTwoStatesD(node, symptoms.getAltered_documentation());
+            }
+        }
+    }
+
+    private void PrintAllInputNodes(List<Node> nodeList){
+        for (Node node : nodeList) {
+            System.out.println(node.getName());
+            for (int i = 0; i < node.getStatesSize(); i++) {
+                System.out.println(node.getStateAt(i) + " : " + ((ProbabilisticNode) node).getMarginalAt(i));
+            }
+        }
+    }
+
+    private void PrintAllOutputNodes(List<Node> nodeList){
+        for (Node node : nodeList) {
+            System.out.println(node.getName());
+            for (int i = 0; i < node.getStatesSize(); i++) {
+                System.out.println(node.getStateAt(i) + " : " + ((ProbabilisticNode) node).getMarginalAt(i));
+            }
+        }
+    }
+
+    private void InputNodeProbabilities(List<Node> nodeList) {
+        for (Node node : nodeList) {
+            System.out.println(node.getName() + ":");
+
+            if(node.getStatesSize() == 2){
+                Scanner myInput = new Scanner(System.in);  // Create a Scanner object
+
+                String strInput = myInput.nextLine();  // Read user input
+                int intInput = Integer.parseInt(strInput);
+                if (intInput != 0 && intInput != 1)
+                    System.out.println("GRESKA!!! Unesite 1 ili 0!!!");
+                SetNodeProbabilityWithTwoStates(node, (float) intInput);
+            } else if(node.getStatesSize() == 3){
+                Scanner myInput = new Scanner(System.in);  // Create a Scanner object
+
+                String strInput = myInput.nextLine();  // Read user input
+                int intInput = Integer.parseInt(strInput);
+                if (intInput != 1 && intInput != 2 && intInput != 3)
+                    System.out.println("GRESKA!!! Unesite 1, 2 ili 3!!!");
+                SetNodeProbabilityWithThreeStates(node, intInput - 1);
+            }
+
+            /*for (int i = 0; i < node.getStatesSize(); i++) {
+                System.out.println(node.getStateAt(i) + " : ");
+                Scanner myInput = new Scanner(System.in);  // Create a Scanner object
+
+                String strInput = myInput.nextLine();  // Read user input
+                int intInput = Integer.parseInt(strInput);
+                if (intInput != 0 && intInput != 1)
+                    System.out.println("GRESKA!!! Unesite 1 ili 0!!!");
+                //node.setStateAt();
+                ((ProbabilisticNode) node).setMarginalAt(i, (float) intInput);
+            }*/
+        }
+    }
+
+    private List<Node> SortNodeProbabilities(List<Node> nodeList) {
+        int index = -1;
+        float maxProbability = -1;
+        for(int i = 0; i < nodeList.size() - 1; i++){
+            maxProbability = ((ProbabilisticNode) nodeList.get(i)).getMarginalAt(0);
+            index = i;
+            for(int j = i + 1; j < nodeList.size(); j++){
+                if(((ProbabilisticNode) nodeList.get(j)).getMarginalAt(0) > maxProbability){
+                    maxProbability = ((ProbabilisticNode) nodeList.get(j)).getMarginalAt(0);
+                    index = j;
+                }
+            }
+            nodeList = SwapNodes(nodeList, i, index);
+        }
+        return nodeList;
+    }
+
+    private List<Node> SwapNodes(List<Node> nodeList, int i, int j){
+        Node temp = nodeList.get(i);
+        nodeList.set(i, nodeList.get(j));
+        nodeList.set(j, temp);
+        return nodeList;
+    }
+
+    private Node SetNodeProbabilityWithTwoStates(Node node, float probability){
+        ((ProbabilisticNode) node).setMarginalAt(0, probability);
+        ((ProbabilisticNode) node).setMarginalAt(1, 1 - probability);
+        return node;
+    }
+    private Node SetNodeProbabilityWithThreeStates(Node node, int index){
+        for (int i = 0; i < node.getStatesSize(); i++) {
+            if(i == index)
+                ((ProbabilisticNode) node).setMarginalAt(i, 1);
+            else
+                ((ProbabilisticNode) node).setMarginalAt(i, 0);
+        }
+        return node;
+    }
+    private Node SetNodeProbabilityWithTwoStatesD(Node node, boolean checked){
+        if(checked == true) {
+            ((ProbabilisticNode) node).setMarginalAt(0, 1);
+            ((ProbabilisticNode) node).setMarginalAt(1, 0);
+        }else{
+            ((ProbabilisticNode) node).setMarginalAt(0, 0);
+            ((ProbabilisticNode) node).setMarginalAt(1, 1);
+        }
+        return node;
+    }
+    private Node SetNodeProbabilityWithThreeStatesD(Node node, int index){
+        for (int i = 0; i < node.getStatesSize(); i++) {
+            if(i == index)
+                ((ProbabilisticNode) node).setMarginalAt(i, 1);
+            else
+                ((ProbabilisticNode) node).setMarginalAt(i, 0);
+        }
+        return node;
+    }
+}

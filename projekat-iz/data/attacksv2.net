@@ -1,0 +1,722 @@
+net
+{
+     node_size = (0 0);
+     name = "New BN";
+     tree = "(C11,C14,C25,C30,C31,C33,C3,C5,C18,C1,C2,C6,C7,C8,C9,C10,C12,C13,C16,C17,C19,C23,C27,C29,C32,C34,C35,C36,C37,C38,C4)";
+     UnBBayes_Color_Probabilistic_Description = "-256";
+     UnBBayes_Color_Probabilistic_Explanation = "-16711936";
+}
+
+node Suspicious_code_changes
+{
+     label = "S2";
+     position = (821 89);
+     states = ("yes" "no");
+}
+
+node Suspicious_data_modifications
+{
+     label = "S9";
+     position = (1717 73);
+     states = ("yes" "no");
+}
+
+node Embed_Virus_into_DLL
+{
+     label = "C25";
+     position = (1595 409);
+     states = ("yes" "no");
+}
+
+node Malicious_Logic_Inserted_into_Product_Software_by_Authorized_Developer
+{
+     label = "C30";
+     position = (592 401);
+     states = ("yes" "no");
+}
+
+node Malicious_Logic_Insertion_into_Product_Software_via_Configuration_Management_Manipulation
+{
+     label = "C31";
+     position = (518 399);
+     states = ("yes" "no");
+}
+
+node Malicious_Logic_Insertion_into_Product_Software_via_Inclusion_of_3rd_Party_Component_Dependency
+{
+     label = "C33";
+     position = (676 405);
+     states = ("yes" "no");
+}
+
+node Poison_Web_Service_Registry
+{
+     label = "C3";
+     position = (198 406);
+     states = ("yes" "no");
+}
+
+node Manipulate_writable_configuration_files
+{
+     label = "C5";
+     position = (278 406);
+     states = ("yes" "no");
+}
+
+node Data_injected_during_configuration
+{
+     label = "C18";
+     position = (444 403);
+     states = ("yes" "no");
+}
+
+node Company_size
+{
+     label = "S12";
+     position = (1111 693);
+     states = ("small" "medium" "big");
+}
+
+node Schema_poisoning
+{
+     label = "C2";
+     position = (361 402);
+     states = ("yes" "no");
+}
+
+node Infiltration_of_software_development_environment
+{
+     label = "C5";
+     position = (752 406);
+     states = ("yes" "no");
+}
+
+node Hardware_component_substitution_during_baselining
+{
+     label = "C6";
+     position = (833 403);
+     states = ("yes" "no");
+}
+
+node Counterfeit_hardware_component_inserted_during_product_assembly
+{
+     label = "C7";
+     position = (919 407);
+     states = ("yes" "no");
+}
+
+node Altered_installed_BIOS
+{
+     label = "C8";
+     position = (1001 403);
+     states = ("yes" "no");
+}
+
+node Infiltration_of_hardware_development_environment
+{
+     label = "C9";
+     position = (1083 366);
+     states = ("yes" "no");
+}
+
+node Open_source_libraries_altered
+{
+     label = "C10";
+     position = (1163 408);
+     states = ("yes" "no");
+}
+
+node ASIC_with_malicious_functionality
+{
+     label = "C11";
+     position = (1238 446);
+     states = ("yes" "no");
+}
+
+node Malicious_hardware_component_replacement
+{
+     label = "C16";
+     position = (1309 408);
+     states = ("yes" "no");
+}
+
+node Malicious_software_implanted
+{
+     label = "C17";
+     position = (1379 409);
+     states = ("yes" "no");
+}
+
+node Rogue_integration_procedures
+{
+     label = "C18";
+     position = (1453 406);
+     states = ("yes" "no");
+}
+
+node Bypassing_ATA_password_security
+{
+     label = "C19";
+     position = (1521 407);
+     states = ("yes" "no");
+}
+
+node Infected_hardware
+{
+     label = "C23";
+     position = (1669 408);
+     states = ("yes" "no");
+}
+
+node Software_in_development_phase
+{
+     label = "S3";
+     position = (949 83);
+     states = ("yes" "no");
+}
+
+node Software_in_deployment_phase
+{
+     label = "S5";
+     position = (1267 84);
+     states = ("yes" "no");
+}
+
+node Using_open_source_or_3rd_party_components
+{
+     label = "S4";
+     position = (1046 161);
+     states = ("yes" "no");
+}
+
+node Unauthorized_physical_access_occured_recently
+{
+     label = "S6";
+     position = (1381 82);
+     states = ("yes" "no");
+}
+
+node Recently_received_updates
+{
+     label = "S8";
+     position = (1608 79);
+     states = ("yes" "no");
+}
+
+node Recently_used_removable_media
+{
+     label = "S7";
+     position = (1497 78);
+     states = ("yes" "no");
+}
+
+node Unefectivness_or_errors_in_software
+{
+     label = "S10";
+     position = (1820 94);
+     states = ("yes" "no");
+}
+
+node Denial_of_service
+{
+     label = "S1";
+     position = (677 90);
+     states = ("yes" "no");
+}
+
+node USB_memory_attacks
+{
+     label = "C37";
+     position = (1738 407);
+     states = ("yes" "no");
+}
+
+node Altered_component_firmware
+{
+     label = "C38";
+     position = (1809 408);
+     states = ("yes" "no");
+}
+
+node Altered_documentation
+{
+     label = "S11";
+     position = (1942 100);
+     states = ("yes" "no");
+}
+
+node Document_alteration_to_produce_underperforming_system
+{
+     label = "C2";
+     position = (1741 352);
+     states = ("yes" "no");
+}
+
+node Documentation_alteration_to_cause_error_in_system_design
+{
+     label = "C3";
+     position = (2127 349);
+     states = ("yes" "no");
+}
+
+node Documentation_alteration_to_circumvent_dialdown
+{
+     label = "C4";
+     position = (2534 347);
+     states = ("yes" "no");
+}
+
+potential (Suspicious_code_changes)
+{
+ data = ( 0.5 0.5 );
+}
+
+potential (Suspicious_data_modifications)
+{
+ data = ( 0.5 0.5 );
+}
+
+potential (Embed_Virus_into_DLL | Suspicious_data_modifications Software_in_deployment_phase Company_size)
+{
+ data = (((( 0.92 0.08 )
+( 0.95 0.05 )
+( 0.99 0.01 ))
+(( 0.9 0.1 )
+( 0.92 0.08 )
+( 0.93 0.07 )))
+((( 0.85 0.15 )
+( 0.87 0.13 )
+( 0.9 0.1 ))
+(( 0.01 0.99 )
+( 0.02 0.98 )
+( 0.03 0.97 ))));
+}
+
+potential (Malicious_Logic_Inserted_into_Product_Software_by_Authorized_Developer | Suspicious_code_changes Software_in_development_phase Company_size)
+{
+ data = (((( 0.9 0.1 )
+( 0.95 0.05 )
+( 0.98 0.02 ))
+(( 0.7 0.3 )
+( 0.75 0.25 )
+( 0.8 0.2 )))
+((( 0.7 0.3 )
+( 0.75 0.25 )
+( 0.8 0.2 ))
+(( 0.02 0.98 )
+( 0.05 0.95 )
+( 0.08 0.92 ))));
+}
+
+potential (Malicious_Logic_Insertion_into_Product_Software_via_Configuration_Management_Manipulation | Recently_received_updates Software_in_deployment_phase Company_size)
+{
+ data = (((( 0.9 0.1 )
+( 0.95 0.05 )
+( 0.98 0.02 ))
+(( 0.7 0.3 )
+( 0.75 0.25 )
+( 0.8 0.2 )))
+((( 0.7 0.3 )
+( 0.75 0.25 )
+( 0.8 0.2 ))
+(( 0.02 0.98 )
+( 0.03 0.97 )
+( 0.05 0.95 ))));
+}
+
+potential (Malicious_Logic_Insertion_into_Product_Software_via_Inclusion_of_3rd_Party_Component_Dependency | Suspicious_code_changes Using_open_source_or_3rd_party_components Software_in_deployment_phase Software_in_development_phase Company_size)
+{
+ data = (((((( 0.95 0.05 )
+( 0.98 0.02 )
+( 0.99 0.01 ))
+(( 0.9 0.1 )
+( 0.92 0.08 )
+( 0.95 0.05 )))
+((( 0.9 0.1 )
+( 0.92 0.08 )
+( 0.95 0.05 ))
+(( 0.8 0.2 )
+( 0.85 0.15 )
+( 0.9 0.1 ))))
+(((( 0.9 0.1 )
+( 0.92 0.08 )
+( 0.95 0.05 ))
+(( 0.8 0.2 )
+( 0.85 0.15 )
+( 0.9 0.1 )))
+((( 0.8 0.2 )
+( 0.85 0.15 )
+( 0.9 0.1 ))
+(( 0.6 0.4 )
+( 0.65 0.35 )
+( 0.7 0.3 )))))
+((((( 0.9 0.1 )
+( 0.92 0.08 )
+( 0.95 0.05 ))
+(( 0.8 0.2 )
+( 0.85 0.15 )
+( 0.9 0.1 )))
+((( 0.8 0.2 )
+( 0.85 0.15 )
+( 0.9 0.1 ))
+(( 0.6 0.4 )
+( 0.65 0.35 )
+( 0.7 0.3 ))))
+(((( 0.8 0.2 )
+( 0.85 0.15 )
+( 0.9 0.1 ))
+(( 0.6 0.4 )
+( 0.65 0.35 )
+( 0.7 0.3 )))
+((( 0.6 0.4 )
+( 0.65 0.35 )
+( 0.7 0.3 ))
+(( 0.02 0.98 )
+( 0.05 0.95 )
+( 0.08 0.92 ))))));
+}
+
+potential (Poison_Web_Service_Registry | Denial_of_service Company_size)
+{
+ data = ((( 0.7 0.3 )
+( 0.8 0.2 )
+( 0.9 0.1 ))
+(( 0.3 0.7 )
+( 0.2 0.8 )
+( 0.1 0.9 )));
+}
+
+potential (Manipulate_writable_configuration_files | Suspicious_code_changes Company_size)
+{
+ data = ((( 0.7 0.3 )
+( 0.8 0.2 )
+( 0.9 0.1 ))
+(( 0.3 0.7 )
+( 0.2 0.8 )
+( 0.1 0.9 )));
+}
+
+potential (Data_injected_during_configuration | Software_in_development_phase Suspicious_code_changes Company_size)
+{
+ data = (((( 0.9 0.1 )
+( 0.95 0.05 )
+( 0.98 0.02 ))
+(( 0.2 0.8 )
+( 0.3 0.7 )
+( 0.4 0.6 )))
+((( 0.6 0.4 )
+( 0.7 0.3 )
+( 0.8 0.2 ))
+(( 0.02 0.98 )
+( 0.03 0.97 )
+( 0.05 0.95 ))));
+}
+
+potential (Company_size)
+{
+ data = ( 0.33333334 0.33333334 0.33333334 );
+}
+
+potential (Schema_poisoning | Denial_of_service Unefectivness_or_errors_in_software Company_size)
+{
+ data = (((( 0.9 0.1 )
+( 0.95 0.05 )
+( 0.98 0.02 ))
+(( 0.6 0.4 )
+( 0.7 0.3 )
+( 0.8 0.2 )))
+((( 0.6 0.4 )
+( 0.7 0.3 )
+( 0.8 0.2 ))
+(( 0.1 0.9 )
+( 0.05 0.95 )
+( 0.02 0.98 ))));
+}
+
+potential (Infiltration_of_software_development_environment | Recently_used_removable_media Software_in_deployment_phase Company_size)
+{
+ data = (((( 0.9 0.1 )
+( 0.92 0.08 )
+( 0.95 0.05 ))
+(( 0.8 0.2 )
+( 0.85 0.15 )
+( 0.9 0.1 )))
+((( 0.8 0.2 )
+( 0.85 0.15 )
+( 0.9 0.1 ))
+(( 0.02 0.98 )
+( 0.03 0.97 )
+( 0.05 0.95 ))));
+}
+
+potential (Hardware_component_substitution_during_baselining | Unauthorized_physical_access_occured_recently Company_size)
+{
+ data = ((( 0.8 0.2 )
+( 0.85 0.15 )
+( 0.9 0.1 ))
+(( 0.01 0.99 )
+( 0.02 0.98 )
+( 0.05 0.95 )));
+}
+
+potential (Counterfeit_hardware_component_inserted_during_product_assembly | Unauthorized_physical_access_occured_recently Company_size)
+{
+ data = ((( 0.8 0.2 )
+( 0.85 0.15 )
+( 0.9 0.1 ))
+(( 0.02 0.98 )
+( 0.03 0.97 )
+( 0.05 0.95 )));
+}
+
+potential (Altered_installed_BIOS | Recently_received_updates Company_size)
+{
+ data = ((( 0.6 0.4 )
+( 0.7 0.3 )
+( 0.75 0.25 ))
+(( 0.01 0.99 )
+( 0.02 0.98 )
+( 0.03 0.97 )));
+}
+
+potential (Infiltration_of_hardware_development_environment | Recently_used_removable_media Unauthorized_physical_access_occured_recently Software_in_development_phase Company_size)
+{
+ data = ((((( 0.95 0.05 )
+( 0.97 0.03 )
+( 0.99 0.01 ))
+(( 0.9 0.1 )
+( 0.91 0.09 )
+( 0.92 0.08 )))
+((( 0.9 0.1 )
+( 0.91 0.09 )
+( 0.92 0.08 ))
+(( 0.6 0.4 )
+( 0.65 0.35 )
+( 0.7 0.3 ))))
+(((( 0.9 0.1 )
+( 0.91 0.09 )
+( 0.92 0.08 ))
+(( 0.6 0.4 )
+( 0.65 0.35 )
+( 0.7 0.3 )))
+((( 0.6 0.4 )
+( 0.65 0.35 )
+( 0.7 0.3 ))
+(( 0.01 0.99 )
+( 0.02 0.98 )
+( 0.05 0.95 )))));
+}
+
+potential (Open_source_libraries_altered | Using_open_source_or_3rd_party_components Software_in_deployment_phase Software_in_development_phase Company_size)
+{
+ data = ((((( 0.97 0.03 )
+( 0.98 0.02 )
+( 0.99 0.01 ))
+(( 0.92 0.08 )
+( 0.93 0.07 )
+( 0.95 0.05 )))
+((( 0.92 0.08 )
+( 0.93 0.07 )
+( 0.95 0.05 ))
+(( 0.9 0.1 )
+( 0.92 0.08 )
+( 0.93 0.07 ))))
+(((( 0.7 0.3 )
+( 0.8 0.2 )
+( 0.85 0.15 ))
+(( 0.6 0.4 )
+( 0.65 0.35 )
+( 0.7 0.3 )))
+((( 0.6 0.4 )
+( 0.65 0.35 )
+( 0.7 0.3 ))
+(( 0.01 0.99 )
+( 0.03 0.97 )
+( 0.05 0.95 )))));
+}
+
+potential (ASIC_with_malicious_functionality | Software_in_development_phase Company_size)
+{
+ data = ((( 0.8 0.2 )
+( 0.85 0.15 )
+( 0.9 0.1 ))
+(( 0.01 0.99 )
+( 0.02 0.98 )
+( 0.03 0.97 )));
+}
+
+potential (Malicious_hardware_component_replacement | Unauthorized_physical_access_occured_recently Company_size)
+{
+ data = ((( 0.85 0.15 )
+( 0.9 0.1 )
+( 0.92 0.08 ))
+(( 0.01 0.99 )
+( 0.02 0.98 )
+( 0.03 0.97 )));
+}
+
+potential (Malicious_software_implanted | Unauthorized_physical_access_occured_recently Company_size)
+{
+ data = ((( 0.9 0.1 )
+( 0.91 0.09 )
+( 0.95 0.05 ))
+(( 0.01 0.99 )
+( 0.02 0.98 )
+( 0.05 0.95 )));
+}
+
+potential (Rogue_integration_procedures | Software_in_development_phase Company_size)
+{
+ data = ((( 0.8 0.2 )
+( 0.85 0.15 )
+( 0.9 0.1 ))
+(( 0.01 0.99 )
+( 0.02 0.98 )
+( 0.03 0.97 )));
+}
+
+potential (Bypassing_ATA_password_security | Unauthorized_physical_access_occured_recently Company_size)
+{
+ data = ((( 0.8 0.2 )
+( 0.85 0.15 )
+( 0.9 0.1 ))
+(( 0.01 0.99 )
+( 0.02 0.98 )
+( 0.03 0.97 )));
+}
+
+potential (Infected_hardware | Unauthorized_physical_access_occured_recently Company_size)
+{
+ data = ((( 0.95 0.05 )
+( 0.97 0.03 )
+( 0.99 0.01 ))
+(( 0.01 0.99 )
+( 0.03 0.97 )
+( 0.05 0.95 )));
+}
+
+potential (Software_in_development_phase)
+{
+ data = ( 0.5 0.5 );
+}
+
+potential (Software_in_deployment_phase)
+{
+ data = ( 0.5 0.5 );
+}
+
+potential (Using_open_source_or_3rd_party_components)
+{
+ data = ( 0.5 0.5 );
+}
+
+potential (Unauthorized_physical_access_occured_recently)
+{
+ data = ( 0.5 0.5 );
+}
+
+potential (Recently_received_updates)
+{
+ data = ( 0.5 0.5 );
+}
+
+potential (Recently_used_removable_media)
+{
+ data = ( 0.5 0.5 );
+}
+
+potential (Unefectivness_or_errors_in_software)
+{
+ data = ( 0.5 0.5 );
+}
+
+potential (Denial_of_service)
+{
+ data = ( 0.5 0.5 );
+}
+
+potential (USB_memory_attacks | Suspicious_data_modifications Recently_used_removable_media Unauthorized_physical_access_occured_recently Company_size)
+{
+ data = ((((( 0.97 0.03 )
+( 0.98 0.02 )
+( 0.99 0.01 ))
+(( 0.9 0.1 )
+( 0.91 0.09 )
+( 0.92 0.08 )))
+((( 0.65 0.35 )
+( 0.7 0.3 )
+( 0.75 0.25 ))
+(( 0.55 0.45 )
+( 0.6 0.4 )
+( 0.65 0.35 ))))
+(((( 0.9 0.1 )
+( 0.91 0.09 )
+( 0.92 0.08 ))
+(( 0.88 0.12 )
+( 0.9 0.1 )
+( 0.92 0.08 )))
+((( 0.55 0.45 )
+( 0.6 0.4 )
+( 0.65 0.35 ))
+(( 0.01 0.99 )
+( 0.02 0.98 )
+( 0.03 0.97 )))));
+}
+
+potential (Altered_component_firmware | Company_size Recently_received_updates)
+{
+ data = ((( 0.8 0.2 )
+( 0.85 0.15 ))
+(( 0.9 0.1 )
+( 0.01 0.99 ))
+(( 0.02 0.98 )
+( 0.03 0.97 )));
+}
+
+potential (Altered_documentation)
+{
+ data = ( 0.5 0.5 );
+}
+
+potential (Document_alteration_to_produce_underperforming_system | Unefectivness_or_errors_in_software Altered_documentation Company_size)
+{
+ data = (((( 0.93 0.07 )
+( 0.95 0.05 )
+( 0.97 0.03 ))
+(( 0.9 0.1 )
+( 0.91 0.09 )
+( 0.94 0.06 )))
+((( 0.9 0.1 )
+( 0.91 0.09 )
+( 0.94 0.06 ))
+(( 0.01 0.99 )
+( 0.02 0.98 )
+( 0.03 0.97 ))));
+}
+
+potential (Documentation_alteration_to_cause_error_in_system_design | Unefectivness_or_errors_in_software Company_size Altered_documentation)
+{
+ data = (((( 0.95 0.05 )
+( 0.9 0.1 ))
+(( 0.97 0.03 )
+( 0.92 0.08 ))
+(( 0.97 0.03 )
+( 0.9 0.1 )))
+((( 0.9 0.1 )
+( 0.01 0.99 ))
+(( 0.92 0.08 )
+( 0.03 0.97 ))
+(( 0.97 0.03 )
+( 0.05 0.95 ))));
+}
+
+potential (Documentation_alteration_to_circumvent_dialdown | Company_size Altered_documentation)
+{
+ data = ((( 0.9 0.1 )
+( 0.01 0.99 ))
+(( 0.92 0.08 )
+( 0.03 0.97 ))
+(( 0.95 0.05 )
+( 0.05 0.95 )));
+}
+
