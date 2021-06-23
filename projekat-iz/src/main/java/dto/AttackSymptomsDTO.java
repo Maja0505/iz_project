@@ -1,6 +1,7 @@
 package dto;
 
 public class AttackSymptomsDTO {
+
     private boolean alteredDocumentation;
     private boolean errorsInSoftware;
     private boolean suspiciousDataModifications;
