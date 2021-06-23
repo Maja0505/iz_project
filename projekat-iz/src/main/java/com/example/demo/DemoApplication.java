@@ -74,14 +74,14 @@ public class DemoApplication {
                        System.out.println("gde ne treba");
                        String result1 = solution1.getVariables()[0].toString().replaceAll("'\\.'\\('", "").replaceAll(",\\[]\\)\\)\\)\\)", "")
                                .replaceAll("'", "").replaceAll(",\\[]\\)", "").replaceAll("\\)", "").replaceAll("\\.,", "\\.;").replaceAll("\\[]", "");
-                       List<String> descriptionsForAttack = Arrays.stream(result1.split(",")).collect(Collectors.toList());
+                       String[] descriptionsForAttack = result1.split(",");
 
-                       for (String symptom : descriptionsForAttack) {
-                           JIPQuery query_pl2 = engine.openSynchronousQuery("mitigation_for_attack_symptom('" + symptom + "',X)");
+                       for (int i=0;i<descriptionsForAttack.length;i++) {
+                           System.out.println(descriptionsForAttack[i]);
+                           JIPQuery query_pl2 = engine.openSynchronousQuery("mitigation_for_attack_symptom('" + descriptionsForAttack[i].trim() + "',X)");
                            String result2 = query_pl2.nextSolution().getVariables()[0].toString().replaceAll("'\\.'\\('", "").replaceAll(",\\[]\\)\\)\\)\\)", "")
                                    .replaceAll("'", "").replaceAll(",\\[]\\)", "").replaceAll("\\)", "").replaceAll("\\.,", "\\.;").replaceAll("\\[]", "");
                            mitigations.add(result2);
-
                        }
                    }
                    else{
