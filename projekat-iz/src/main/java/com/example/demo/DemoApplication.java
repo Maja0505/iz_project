@@ -8,8 +8,12 @@ import com.ugos.jiprolog.engine.JIPVariable;
 import dto.AttackDTO;
 import dto.AttackSymptomsDTO;
 import dto.FuzzyInputDto;
+import dto.NewAttackDto;
+import model.Attack;
 import model.AttackCaseDescription;
 import net.sourceforge.jFuzzyLogic.FIS;
+import org.apache.jena.query.*;
+import org.apache.jena.rdf.model.Literal;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.*;
@@ -33,11 +37,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+
+import org.apache.jena.update.UpdateExecutionFactory;
+import org.apache.jena.update.UpdateFactory;
+import org.apache.jena.update.UpdateProcessor;
+import org.apache.jena.update.UpdateRequest;
+
 @SpringBootApplication
 @RestController
 public class DemoApplication {
     Map<String, JIPQuery> map1 = new HashMap<String,JIPQuery>();
     public static AttackDTO attackDTO;
+    private static final String UPDATE_URL = "http://localhost:3030/inz/update";
+    private static final String QUERY_URL = "http://localhost:3030/inz/sparql";
+
+    private static final String PREFIX = "PREFIX na: <http://www.neurologyapp.com/na#> PREFIX xsd: <http://w3.org/2001/XMLSchema#>";
 
 
 
@@ -45,6 +59,90 @@ public class DemoApplication {
         SpringApplication.run(DemoApplication.class, args);
 
     }
+
+    @PostMapping("/insert")
+    public Boolean insert(@RequestBody NewAttackDto newAttackDto) {
+
+        String insertString = PREFIX + " INSERT DATA {";
+        insertString += " na:" + newAttackDto.getName() + "attack a na:Attack; ";
+
+        insertString += " na:name " + "\"" + newAttackDto.getName() + "\"^^xsd:string; ";
+        insertString += " na:description " + "\"" + newAttackDto.getDescription() + "\"^^xsd:string; ";
+        insertString += " na:domain " + "\"" + newAttackDto.getDomain() + "\"^^xsd:string; ";
+        insertString += " na:typical_severity " + "\"" + newAttackDto.getTypical_severity() + "\"^^xsd:string; ";
+        insertString += " na:likelihood_of_attack " + "\"" + newAttackDto.getLikelihood_of_attack() + "\"^^xsd:string; ";
+        insertString += " na:mitigations " + "\"" + newAttackDto.getMitigations() + "\"^^xsd:string; ";
+        insertString += " na:weaknesses " + "\"" + newAttackDto.getWeaknesses() + "\"^^xsd:string; ";
+        insertString += " na:prerequisites " + "\"" + newAttackDto.getPrerequisites() + "\"^^xsd:string . }";
+
+
+        UpdateRequest updateRequest = UpdateFactory.create(insertString);
+        UpdateProcessor updateProcessor = UpdateExecutionFactory.createRemote(updateRequest, UPDATE_URL);
+        updateProcessor.execute();
+
+        return  true;
+    }
+
+    @GetMapping("/get")
+    public List<NewAttackDto> getAll() {
+
+        List<NewAttackDto> attackDtos = new ArrayList<>();
+        String selectString = PREFIX + "SELECT ?name ?description ?domain ?typical_severity ?likelihood_of_attack ?mitigations ?weaknesses ?prerequisites " + "WHERE { "
+                + "    ?attack a na:Attack;" + "" +
+                " na:name ?name;" +
+                " na:description ?description;" +
+                " na:domain ?domain;" +
+                " na:typical_severity ?typical_severity;" +
+                " na:likelihood_of_attack ?likelihood_of_attack;" +
+                " na:mitigations ?mitigations;" +
+                " na:weaknesses ?weaknesses;" +
+                " na:prerequisites ?prerequisites . "   + "}";
+        Query query = QueryFactory.create(selectString);
+        try {
+            QueryExecution exec = QueryExecutionFactory.sparqlService(QUERY_URL, query);
+            ResultSet results = exec.execSelect();
+            ResultSetRewindable resultSetRewindable = ResultSetFactory.copyResults(results);
+            exec.close();
+            while (resultSetRewindable.hasNext()) {
+
+                QuerySolution solution = resultSetRewindable.nextSolution();
+                Literal name = solution.getLiteral("name");
+                Literal description = solution.getLiteral("description");
+                Literal domain= solution.getLiteral("domain");
+                Literal typical_severity= solution.getLiteral("typical_severity");
+                Literal likelihood_of_attack= solution.getLiteral("likelihood_of_attack");
+                Literal mitigations= solution.getLiteral("mitigations");
+                Literal weaknesses= solution.getLiteral("weaknesses");
+                Literal prerequisites= solution.getLiteral("prerequisites");
+
+
+                NewAttackDto attack = new NewAttackDto();
+                attack.setName(name.getString());
+                attack.setDescription(description.getString());
+                attack.setDomain(domain.getString());
+                attack.setTypical_severity(typical_severity.getString());
+                attack.setLikelihood_of_attack(likelihood_of_attack.getString());
+                attack.setMitigations(mitigations.getString());
+                attack.setWeaknesses(weaknesses.getString());
+                attack.setPrerequisites(prerequisites.getString());
+
+
+
+                attackDtos.add(attack);
+
+            }
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+        }
+
+        return attackDtos;
+    }
+
+
+
 
     @PutMapping("/fuzzy")
     public Double fuzzy(@RequestBody FuzzyInputDto fuzzyInputDto) {
@@ -211,6 +309,8 @@ public class DemoApplication {
         PrintAllOutputNodes(sortedNodeList);
         return "a";
     }
+
+
 
     private void PrintAllInputNodes(List<Node> nodeList){
         for (Node node : nodeList) {
