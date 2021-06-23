@@ -9,11 +9,16 @@ import {
   Grid,
   NativeSelect,
   InputLabel,
+  Button,
 } from "@material-ui/core";
+
+import axios from "axios";
 
 const SymptomsOfAttack = () => {
   const [alteredDocumentation, setAlteredDocumentation] = useState("false");
   const [errorsInSoftware, setErrorsInSoftware] = useState("false");
+  const [suspiciousDataModifications, setSuspiciousDataModifications] =
+    useState("false");
   const [recentlyReceivedUpdates, setRecentlyReceivedUpdates] =
     useState("false");
   const [recentlyUsedRemovableMedia, setRecentlyUsedRemovableMedia] =
@@ -30,6 +35,36 @@ const SymptomsOfAttack = () => {
     setUnauthenticatedPhysicalAccessRecently,
   ] = useState("false");
   const [type, setType] = useState("hardware");
+
+  const [attack, setAttack] = useState();
+
+  const findAttackForSymptoms = () => {
+    axios
+      .put("/findAttackForSymptoms", {
+        alteredDocumentation: alteredDocumentation === "true" ? true : false,
+        errorsInSoftware: errorsInSoftware === "true" ? true : false,
+        suspiciousDataModifications:
+          suspiciousDataModifications === "true" ? true : false,
+        recentlyReceivedUpdates:
+          recentlyReceivedUpdates === "true" ? true : false,
+        recentlyUsedRemovableMedia:
+          recentlyUsedRemovableMedia === "true" ? true : false,
+        typicalSeverity: typicalSeverity,
+        denialOfService: denialOfService === "true" ? true : false,
+        suspiciousCodeChanges: suspiciousCodeChanges === "true" ? true : false,
+        softwareInDevelopmentPhase:
+          softwareInDevelopmentPhase === "true" ? true : false,
+        softwareInDeploymentPhase:
+          softwareInDeploymentPhase === "true" ? true : false,
+        unauthenticatedPhysicalAccessRecently:
+          unauthenticatedPhysicalAccessRecently === "true" ? true : false,
+        type: type,
+      })
+      .then((res) => {
+        console.log(res.data);
+        setAttack(res.data);
+      });
+  };
 
   return (
     <div>
@@ -65,6 +100,30 @@ const SymptomsOfAttack = () => {
               style={{ marginTop: "5%" }}
               value={errorsInSoftware}
               onChange={(event) => setErrorsInSoftware(event.target.value)}
+            >
+              <FormControlLabel
+                value="false"
+                control={<Radio color="primary" />}
+                label="No"
+                labelPlacement="start"
+              />
+              <FormControlLabel
+                value="true"
+                control={<Radio color="primary" />}
+                label="Yes"
+                labelPlacement="start"
+              />
+            </RadioGroup>
+          </FormControl>
+          <FormControl component="fieldset" style={{ marginTop: "10%" }}>
+            <FormLabel>Suspicious Data Modifications</FormLabel>
+            <RadioGroup
+              row
+              style={{ marginTop: "5%" }}
+              value={suspiciousDataModifications}
+              onChange={(event) =>
+                setSuspiciousDataModifications(event.target.value)
+              }
             >
               <FormControlLabel
                 value="false"
@@ -272,12 +331,26 @@ const SymptomsOfAttack = () => {
               <option value={"software"}>Software</option>
             </NativeSelect>
           </FormControl>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={findAttackForSymptoms}
+            style={{ marginTop: "15%" }}
+          >
+            Find attack
+          </Button>
         </Grid>
         <Grid item xs={2} />
       </Grid>
-      <Grid container>
-        <Grid item xs={2} />
-      </Grid>
+      {attack !== undefined && attack !== null && (
+        <>
+          <Grid container>
+            <Grid item xs={2} />
+            <Grid item xs={6}></Grid>
+            <Grid item xs={2} />
+          </Grid>
+        </>
+      )}
     </div>
   );
 };
