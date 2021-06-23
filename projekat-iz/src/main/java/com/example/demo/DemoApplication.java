@@ -23,6 +23,10 @@ import java.util.stream.Collectors;
 @SpringBootApplication
 @RestController
 public class DemoApplication {
+    Map<String, JIPQuery> map1 = new HashMap<String,JIPQuery>();
+    public static AttackDTO attackDTO;
+
+
 
     public static void main(String[] args) {
         SpringApplication.run(DemoApplication.class, args);
@@ -77,6 +81,7 @@ public class DemoApplication {
                            String result2 = query_pl2.nextSolution().getVariables()[0].toString().replaceAll("'\\.'\\('", "").replaceAll(",\\[]\\)\\)\\)\\)", "")
                                    .replaceAll("'", "").replaceAll(",\\[]\\)", "").replaceAll("\\)", "").replaceAll("\\.,", "\\.;").replaceAll("\\[]", "");
                            mitigations.add(result2);
+
                        }
                    }
                    else{
@@ -102,7 +107,6 @@ public class DemoApplication {
 
     @PutMapping("/findAttackForSymptoms")
     public AttackDTO findAttackForSymptoms(@RequestBody AttackSymptomsDTO attackSymptomsDTO) {
-        AttackDTO attack=new AttackDTO();
         StandardCBRApplication recommender = new CbrApplication();
 
         try {
@@ -128,14 +132,11 @@ public class DemoApplication {
             query.setDescription( caseDescription );
 
             recommender.cycle(query);
-
-
-
             recommender.postCycle();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return attack;
+        return attackDTO;
     }
 
     }
