@@ -65,6 +65,8 @@ public class DemoApplication {
 
     @GetMapping("/findMitigationsForAttack")
     public List<String> getMitigationsForAttack(@RequestParam(value = "attackName") String attackName) {
+        attackName=attackName.replaceAll("_"," ");
+        System.out.print(attackName);
         List<String> mitigations = new ArrayList<>();
         JIPEngine engine = new JIPEngine();
 
@@ -99,14 +101,21 @@ public class DemoApplication {
                    }
                    else{
                        JIPQuery query_pl3 = engine.openSynchronousQuery("find_type_for_attack('"+ attackName +"',X)");
-                       String type = query_pl3.nextSolution().getVariables()[0].toString().replaceAll("'\\.'\\('", "").replaceAll(",\\[]\\)\\)\\)\\)", "")
-                               .replaceAll("'", "").replaceAll(",\\[]\\)", "").replaceAll("\\)", "").replaceAll("\\.,", "\\.;").replaceAll("\\[]", "");
+                       JIPTerm solution3= query_pl3.nextSolution();
+                       if(solution3!=null){
+                           String type = solution3.getVariables()[0].toString().replaceAll("'\\.'\\('", "").replaceAll(",\\[]\\)\\)\\)\\)", "")
+                                   .replaceAll("'", "").replaceAll(",\\[]\\)", "").replaceAll("\\)", "").replaceAll("\\.,", "\\.;").replaceAll("\\[]", "");
 
-                       JIPQuery query_pl4 = engine.openSynchronousQuery("mitigation_for_attack_type('"+ type +"',X)");
-                       String result4 = query_pl4.nextSolution().getVariables()[0].toString().replaceAll("'\\.'\\('", "").replaceAll(",\\[]\\)\\)\\)\\)", "")
-                               .replaceAll("'", "").replaceAll(",\\[]\\)", "").replaceAll("\\)", "").replaceAll("\\.,", "\\.;").replaceAll("\\[]", "");
+                           JIPQuery query_pl4 = engine.openSynchronousQuery("mitigation_for_attack_type('"+ type +"',X)");
+                           String result4 = query_pl4.nextSolution().getVariables()[0].toString().replaceAll("'\\.'\\('", "").replaceAll(",\\[]\\)\\)\\)\\)", "")
+                                   .replaceAll("'", "").replaceAll(",\\[]\\)", "").replaceAll("\\)", "").replaceAll("\\.,", "\\.;").replaceAll("\\[]", "");
 
-                       mitigations.add(result4);
+                           mitigations.add(result4);
+                       }
+                       else{
+                           mitigations.add("No mitigations for this attack.");
+                       }
+
                    }
 
             }else{
