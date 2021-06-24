@@ -21,14 +21,14 @@ For Frontend we used React js
 ``` bash
     # From frontend/ run:
     npm install
-    ng serve --o
+    npm start
 ```
 **Backend** 
 
   After cloning project from github, first you need to add necessary dependencies from libs folder as shown 
-      https://www.jetbrains.com/help/idea/working-with-module-dependencies.html.
+      https://www.jetbrains.com/help/idea/working-with-module-dependencies.html .
+      Then you need to start Fuseki server.Then position on folder appache-jena-fuseki-3.11.0 and start fuseki-server batch file.
 
-``` bash
-    Run as maven project
-```
+**How to run**
+         Open project in your IDE,configure and then run as maven project.
 
