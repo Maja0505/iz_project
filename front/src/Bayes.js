@@ -57,13 +57,15 @@ const Bayes = () => {
 
   const showMitigationsForAttack=(attack)=> {
     console.log(attack);
-    axios.get("/findMitigationsForAttack?attackName=",attack)
-      .then(res => {
-        console.log(res.data);
-       // setMitigations(res.data);
-      //  setShowMitigations(true);
-        //setShowAttacks(false);
-      })
+    axios
+    .get("/findMitigationsForAttack?attackName=" + attack)
+    .then((res) => {
+      console.log(res.data);
+       setMitigations(res.data);
+       setShowMitigations(true);
+       setShowAttacks(false);
+    });
+   
   };
 
   const back=() =>{
