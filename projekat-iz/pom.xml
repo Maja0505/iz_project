@@ -17,6 +17,8 @@
         <java.version>11</java.version>
     </properties>
 
+
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -60,7 +62,269 @@
             <version>1.0</version>
             <systemPath>${project.basedir}/libs/jiprolog-4.1.6.1.jar</systemPath>
         </dependency>
+
+        <dependency>
+            <groupId>unbbayes</groupId>
+            <artifactId>unbbayes</artifactId>
+            <scope>system</scope>
+            <version>1.0</version>
+            <systemPath>${project.basedir}/libs/unbbayes-4.22.18.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>collection-0.7</groupId>
+            <artifactId>collection-0.7</artifactId>
+            <scope>system</scope>
+            <version>1.0</version>
+            <systemPath>${project.basedir}/libs/collection-0.7.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-cli-1.4</groupId>
+            <artifactId>commons-cli-1.4</artifactId>
+            <scope>system</scope>
+            <version>1.0</version>
+            <systemPath>${project.basedir}/libs/commons-cli-1.4.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-codec-1.11</groupId>
+            <artifactId>commons-codec-1.11</artifactId>
+            <scope>system</scope>
+            <version>1.0</version>
+            <systemPath>${project.basedir}/libs/commons-codec-1.11.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-compress-1.18</groupId>
+            <artifactId>ccommons-compress-1.18</artifactId>
+            <scope>system</scope>
+            <version>1.0</version>
+            <systemPath>${project.basedir}/libs/commons-compress-1.18.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-csv-1.5</groupId>
+            <artifactId>commons-csv-1.5</artifactId>
+            <scope>system</scope>
+            <version>1.0</version>
+            <systemPath>${project.basedir}/libs/commons-csv-1.5.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-io-2.6</groupId>
+            <artifactId>commons-io-2.6</artifactId>
+            <scope>system</scope>
+            <version>1.0</version>
+            <systemPath>${project.basedir}/libs/commons-io-2.6.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-lang3-3.4</groupId>
+            <artifactId>commons-lang3-3.4</artifactId>
+            <scope>system</scope>
+            <version>1.0</version>
+            <systemPath>${project.basedir}/libs/commons-lang3-3.4.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>httpclient-4.5.5</groupId>
+            <artifactId>httpclient-4.5.5</artifactId>
+            <scope>system</scope>
+            <version>1.0</version>
+            <systemPath>${project.basedir}/libs/httpclient-4.5.5.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>httpclient-cache-4.5.5</groupId>
+            <artifactId>httpclient-cache-4.5.5</artifactId>
+            <scope>system</scope>
+            <version>1.0</version>
+            <systemPath>${project.basedir}/libs/httpclient-cache-4.5.5.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>httpcore-4.4.9</groupId>
+            <artifactId>httpcore-4.4.9</artifactId>
+            <scope>system</scope>
+            <version>1.0</version>
+            <systemPath>${project.basedir}/libs/httpcore-4.4.9.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>jackson-annotations-2.9.0</groupId>
+            <artifactId>jackson-annotations-2.9.0</artifactId>
+            <scope>system</scope>
+            <version>1.0</version>
+            <systemPath>${project.basedir}/libs/jackson-annotations-2.9.0.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>jackson-core-2.9.8</groupId>
+            <artifactId>jackson-core-2.9.8</artifactId>
+            <scope>system</scope>
+            <version>1.0</version>
+            <systemPath>${project.basedir}/libs/jackson-core-2.9.8.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>jackson-databind-2.9.8</groupId>
+            <artifactId>jackson-databind-2.9.8</artifactId>
+            <scope>system</scope>
+            <version>1.0</version>
+            <systemPath>${project.basedir}/libs/jackson-databind-2.9.8.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>jcl-over-slf4j-1.7.26</groupId>
+            <artifactId>jcl-over-slf4j-1.7.26</artifactId>
+            <scope>system</scope>
+            <version>1.0</version>
+            <systemPath>${project.basedir}/libs/jcl-over-slf4j-1.7.26.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>jena-arq-3.11.0</groupId>
+            <artifactId>jena-arq-3.11.0</artifactId>
+            <scope>system</scope>
+            <version>1.0</version>
+            <systemPath>${project.basedir}/libs/jena-arq-3.11.0.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>jena-base-3.11.0</groupId>
+            <artifactId>jena-base-3.11.0</artifactId>
+            <scope>system</scope>
+            <version>1.0</version>
+            <systemPath>${project.basedir}/libs/jena-base-3.11.0.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>jena-core-3.11.0</groupId>
+            <artifactId>jena-core-3.11.0</artifactId>
+            <scope>system</scope>
+            <version>1.0</version>
+            <systemPath>${project.basedir}/libs/jena-core-3.11.0.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>jena-dboe-base-3.11.0</groupId>
+            <artifactId>jena-dboe-base-3.11.0</artifactId>
+            <scope>system</scope>
+            <version>1.0</version>
+            <systemPath>${project.basedir}/libs/jena-dboe-base-3.11.0.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>jena-dboe-index-3.11.0</groupId>
+            <artifactId>jena-dboe-index-3.11.0</artifactId>
+            <scope>system</scope>
+            <version>1.0</version>
+            <systemPath>${project.basedir}/libs/jena-dboe-index-3.11.0.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>jena-dboe-trans-data-3.11.0</groupId>
+            <artifactId>jena-dboe-trans-data-3.11.0</artifactId>
+            <scope>system</scope>
+            <version>1.0</version>
+            <systemPath>${project.basedir}/libs/jena-dboe-trans-data-3.11.0.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>jena-dboe-transaction-3.11.0</groupId>
+            <artifactId>jena-dboe-transaction-3.11.0</artifactId>
+            <scope>system</scope>
+            <version>1.0</version>
+            <systemPath>${project.basedir}/libs/jena-dboe-transaction-3.11.0.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>jena-iri-3.11.0</groupId>
+            <artifactId>jena-iri-3.11.0</artifactId>
+            <scope>system</scope>
+            <version>1.0</version>
+            <systemPath>${project.basedir}/libs/jena-iri-3.11.0.jar</systemPath>
+        </dependency>
+
+
+        <dependency>
+            <groupId>jena-rdfconnection-3.11.0</groupId>
+            <artifactId>jena-rdfconnection-3.11.0</artifactId>
+            <scope>system</scope>
+            <version>1.0</version>
+            <systemPath>${project.basedir}/libs/jena-rdfconnection-3.11.0.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>jena-shaded-guava-3.11.0</groupId>
+            <artifactId>jena-shaded-guava-3.11.0</artifactId>
+            <scope>system</scope>
+            <version>1.0</version>
+            <systemPath>${project.basedir}/libs/jena-shaded-guava-3.11.0.jar</systemPath>
+        </dependency>
+
+
+        <dependency>
+            <groupId>jena-tdb2-3.11.0</groupId>
+            <artifactId>jena-tdb2-3.11.0</artifactId>
+            <scope>system</scope>
+            <version>1.0</version>
+            <systemPath>${project.basedir}/libs/jena-tdb2-3.11.0.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>jena-tdb-3.11.0</groupId>
+            <artifactId>jena-tdb-3.11.0</artifactId>
+            <scope>system</scope>
+            <version>1.0</version>
+            <systemPath>${project.basedir}/libs/jena-tdb-3.11.0.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>jsonld-java-0.12.3</groupId>
+            <artifactId>jsonld-java-0.12.3</artifactId>
+            <scope>system</scope>
+            <version>1.0</version>
+            <systemPath>${project.basedir}/libs/jsonld-java-0.12.3.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>libthrift-0.12.0</groupId>
+            <artifactId>libthrift-0.12.0</artifactId>
+            <scope>system</scope>
+            <version>1.0</version>
+            <systemPath>${project.basedir}/libs/libthrift-0.12.0.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>slf4j-api-1.7.26</groupId>
+            <artifactId>slf4j-api-1.7.26</artifactId>
+            <scope>system</scope>
+            <version>1.0</version>
+            <systemPath>${project.basedir}/libs/slf4j-api-1.7.26.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>slf4j-log4j12-1.7.26</groupId>
+            <artifactId>slf4j-log4j12-1.7.26</artifactId>
+            <scope>system</scope>
+            <version>1.0</version>
+            <systemPath>${project.basedir}/libs/slf4j-log4j12-1.7.26.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>log4j-1.2.17</groupId>
+            <artifactId>log4j-1.2.17</artifactId>
+            <scope>system</scope>
+            <version>1.1</version>
+            <systemPath>${project.basedir}/libs/log4j-1.2.17.jar</systemPath>
+        </dependency>
+
+
     </dependencies>
+
+
 
     <build>
         <plugins>
