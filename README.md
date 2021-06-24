@@ -10,10 +10,10 @@ Maja Tomić
 
 In our application
   For Frontend we used React js
-    How to run:
+    `How to run:
           # From frontend/ run:
                   npm install
-                  ng serve --o
+                  ng serve --o`
   For Backend we used Spring boot
       After cloning project from github, first you need to add necessary dependencies from libs folder as shown 
       https://www.jetbrains.com/help/idea/working-with-module-dependencies.html.
