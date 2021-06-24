@@ -10,9 +10,11 @@ const RiskOfAttack = () => {
   const [confidenciality, set_confidenciality] = useState(0);
   const [integrity, set_integrity] = useState(0);
   const [availability, set_availability] = useState(0);
-  const [risk, set_risk] = useState(0);
+  const [risk, set_risk] = useState();
 
   const calculateRisk = () => {
+    set_risk(null);
+
     var risk = {
       access_vector: access_vector,
       access_complexity: access_complexity,
@@ -137,31 +139,33 @@ const RiskOfAttack = () => {
             </Button>
           </Grid>
           <Grid item xs={2} />
-          <Grid item xs={3}>
-            <Typography variant="h5" style={{ color: "blue" }}>
-              Risk : {risk}
-            </Typography>
-            {risk < 25 && (
-              <Typography style={{ color: "green" }} variant="subtitle2">
-                Low
+          {risk !== undefined && risk !== null && (
+            <Grid item xs={3}>
+              <Typography variant="h5" style={{ color: "blue" }}>
+                Risk : {risk}
               </Typography>
-            )}
-            {risk >= 25 && risk < 55 && (
-              <Typography style={{ color: "yellow" }} variant="subtitle2">
-                Medium
-              </Typography>
-            )}
-            {risk >= 55 && risk < 85 && (
-              <Typography style={{ color: "orange" }} variant="subtitle2">
-                High
-              </Typography>
-            )}
-            {risk >= 85 && (
-              <Typography style={{ color: "red" }} variant="subtitle2">
-                Very high
-              </Typography>
-            )}
-          </Grid>
+              {risk < 25 && (
+                <Typography style={{ color: "green" }} variant="subtitle2">
+                  Low
+                </Typography>
+              )}
+              {risk >= 25 && risk < 55 && (
+                <Typography style={{ color: "yellow" }} variant="subtitle2">
+                  Medium
+                </Typography>
+              )}
+              {risk >= 55 && risk < 85 && (
+                <Typography style={{ color: "orange" }} variant="subtitle2">
+                  High
+                </Typography>
+              )}
+              {risk >= 85 && (
+                <Typography style={{ color: "red" }} variant="subtitle2">
+                  Very high
+                </Typography>
+              )}
+            </Grid>
+          )}
         </Grid>
       </Grid>
     </div>

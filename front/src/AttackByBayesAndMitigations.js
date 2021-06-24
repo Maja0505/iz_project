@@ -8,7 +8,7 @@ const AttackDescriptionAndMitigations = ({
 }) => {
   const showMitigations = () => {
     axios
-      .get("/findMitigationsForAttack?attackName=" + attack.name)
+      .get("/findMitigationsForAttack?attackName=" + attack.attack)
       .then((res) => {
         setMitigations(res.data);
       });
@@ -28,22 +28,12 @@ const AttackDescriptionAndMitigations = ({
               >
                 <Grid item xs={12}>
                   <Typography variant="inherit">
-                    <b>Name : </b>
+                    <b>Attack name : </b>
                   </Typography>
                 </Grid>
                 <Grid item xs={12} style={{ marginTop: "10%" }}>
                   <Typography variant="inherit">
-                    <b>Type : </b>
-                  </Typography>
-                </Grid>
-                <Grid item xs={12} style={{ marginTop: "10%" }}>
-                  <Typography variant="inherit">
-                    <b>Likelihood Of Attack : </b>
-                  </Typography>
-                </Grid>
-                <Grid item xs={12} style={{ marginTop: "10%" }}>
-                  <Typography variant="inherit">
-                    <b>Description : </b>
+                    <b>Probability : </b>
                   </Typography>
                 </Grid>
               </Grid>
@@ -54,19 +44,11 @@ const AttackDescriptionAndMitigations = ({
                 style={{ textAlign: "center", margin: "auto", marginTop: "5%" }}
               >
                 <Grid item xs={12}>
-                  <Typography variant="inherit">{attack.name}</Typography>
-                </Grid>
-                <Grid item xs={12} style={{ marginTop: "3.3%" }}>
-                  <Typography variant="inherit">{attack.type}</Typography>
+                  <Typography variant="inherit">{attack.attack}</Typography>
                 </Grid>
                 <Grid item xs={12} style={{ marginTop: "3.3%" }}>
                   <Typography variant="inherit">
-                    {attack.likelihoodOfAttack}
-                  </Typography>
-                </Grid>
-                <Grid item xs={12} style={{ marginTop: "3.3%" }}>
-                  <Typography variant="inherit">
-                    {attack.description}
+                    {attack.probability.toString().substring(0, 4)}
                   </Typography>
                 </Grid>
               </Grid>
