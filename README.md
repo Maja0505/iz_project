@@ -6,7 +6,7 @@ The domain of attacks that we covered is Supply chain attacks, which is a group 
 
 
 
-| Students | Team 14 |
+| Students | Team 7 |
 |--------------|-------------|
 | Student 1 | Danica Vojvodić |
 | Student 2 | Nemanja Jevtić |
