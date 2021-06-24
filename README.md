@@ -19,7 +19,7 @@ The domain of attacks that we covered is Supply chain attacks,which is a group o
 **Frontend**  
 For Frontend we used React js
 ``` bash
-    # From frontend/ run:
+    # From front/ run:
     npm install
     npm start
 ```
