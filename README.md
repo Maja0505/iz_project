@@ -28,7 +28,5 @@ For Frontend we used React js
   After cloning project from github, first you need to add necessary dependencies from libs folder as shown 
       https://www.jetbrains.com/help/idea/working-with-module-dependencies.html .
       Then you need to start Fuseki server.Then position on folder appache-jena-fuseki-3.11.0 and start fuseki-server batch file.
-
-**How to run**
-         Open project in your IDE,configure and then run as maven project.
+      Finally,open project in your IDE,configure and then run as maven project.
 
