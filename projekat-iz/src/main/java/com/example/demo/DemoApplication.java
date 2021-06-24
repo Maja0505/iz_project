@@ -366,6 +366,9 @@ public class DemoApplication {
                 mitigations= Arrays.stream(result.split(",")).collect(Collectors.toList());
             }
 
+            for(String mitigation:mitigations){
+                System.out.println(mitigation);
+            }
 
 
         return mitigations;

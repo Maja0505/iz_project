@@ -34,18 +34,18 @@ const Bayes = () => {
   const findAttackForSymptoms = () => {
     axios
       .put("/bayes", {
-        Suspicious_code_changes: suspiciousCodeChanges === "true" ? true : false,
-        Suspicious_data_modifications: suspiciousDataModifications === "true" ? true : false,
-        Company_size: companySize,
-        Software_in_development_phase:softwareInDevelopmentPhase === "true" ? true : false,
-        Software_in_deployment_phase: softwareInDeploymentPhase === "true" ? true : false,
-        Using_open_source_or_3rd_party_components:openSourceOr3rdPartyComponents === "true" ? true : false,
-        Unauthorized_physical_access_occured_recently:unauthenticatedPhysicalAccessRecently === "true" ? true : false,
-        Recently_received_updates: recentlyReceivedUpdates === "true" ? true : false,
-        Recently_used_removable_media: recentlyUsedRemovableMedia === "true" ? true : false,
-        Unefectivness_or_errors_in_software: errorsInSoftware === "true" ? true : false,
-        Denial_of_service: denialOfService === "true" ? true : false,
-        Altered_documentation: alteredDocumentation === "true" ? true : false,
+        suspicious_code_changes: suspiciousCodeChanges === "true" ? true : false,
+        suspicious_data_modifications: suspiciousDataModifications === "true" ? true : false,
+        company_size: companySize,
+        software_in_development_phase:softwareInDevelopmentPhase === "true" ? true : false,
+        software_in_deployment_phase: softwareInDeploymentPhase === "true" ? true : false,
+        using_open_source_or_3rd_party_components:openSourceOr3rdPartyComponents === "true" ? true : false,
+        unauthorized_physical_access_occured_recently:unauthenticatedPhysicalAccessRecently === "true" ? true : false,
+        recently_received_updates: recentlyReceivedUpdates === "true" ? true : false,
+        recently_used_removable_media: recentlyUsedRemovableMedia === "true" ? true : false,
+        unefectivness_or_errors_in_software: errorsInSoftware === "true" ? true : false,
+        denial_of_service: denialOfService === "true" ? true : false,
+        altered_documentation: alteredDocumentation === "true" ? true : false,
         })
       .then((res) => {
         console.log(res.data);
@@ -57,11 +57,12 @@ const Bayes = () => {
 
   const showMitigationsForAttack=(attack)=> {
     console.log(attack);
-    axios.get("/findMitigationsForAttack",{params:{attackName:attack}})
+    axios.get("/findMitigationsForAttack?attackName=",attack)
       .then(res => {
-        setMitigations(res.data);
-        setShowMitigations(true);
-        setShowAttacks(false);
+        console.log(res.data);
+       // setMitigations(res.data);
+      //  setShowMitigations(true);
+        //setShowAttacks(false);
       })
   };
 
@@ -124,7 +125,7 @@ const Bayes = () => {
           <RadioGroup
             row
             style={{ marginTop: "5%" }}
-            value={errorsInSoftware}
+            value={openSourceOr3rdPartyComponents}
             onChange={(event) => setOpenSourceOr3rdPartyComponents(event.target.value)}
           >
             <FormControlLabel

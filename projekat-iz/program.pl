@@ -29,14 +29,14 @@ mitigations('Poison Web Service Registry','Harden registry server and file acces
 mitigations('Poison Web Service Registry','Implement communications to and from the registry using secure protocols').
 
 
-attack('Modification of Registry Run Keys').
-attack_type('Poison Web Service Registry','Software').
-mitigations('Modification of Registry Run Keys','Identify programs that may be used to acquire process information and block them by using a software restriction policy or tools that restrict program execution by using a process allowlist').
+attack('Modification Of Registry Run Keys').
+attack_type('Modification Of Registry Run Keys','Software').
+mitigations('Modification Of Registry Run Keys','Identify programs that may be used to acquire process information and block them by using a software restriction policy or tools that restrict program execution by using a process allowlist').
 
 
-attack('Modification of Windows Service Configuration').
-attack_type('Modification of Windows Service Configuration','Software').
-mitigations('Modification of Windows Service Configuration','Ensure proper permissions are set for Registry hives to prevent users from modifying keys for system components that may lead to privilege escalation').
+attack('Modification Of Windows Service Configuration').
+attack_type('Modification Of Windows Service Configuration','Software').
+mitigations('Modification Of Windows Service Configuration','Ensure proper permissions are set for Registry hives to prevent users from modifying keys for system components that may lead to privilege escalation').
 
 
 attack('Schema Poisoning').
@@ -88,22 +88,22 @@ attack_type('Malicious Logic Inserted Into Product Software by Authorized Develo
 mitigations('Malicious Logic Inserted Into Product Software by Authorized Developer', 'Assess Software and software components during development and prior to deployment to ensure that they function as intended and without any malicious functionality').
 
 
-attack('Malicious Logic Insertion into Product Software via Configuration Management Manipulation').
-attack_type('Malicious Logic Insertion into Product Software via Configuration Management Manipulation','Software').
-mitigations('Malicious Logic Insertion into Product Software via Configuration Management Manipulation', 'Assess Software and software components during development and prior to deployment to ensure that they function as intended and without any malicious functionality').
-mitigations('Malicious Logic Insertion into Product Software via Configuration Management Manipulation', 'Leverage anti virus products to detect and quarantine software with known virus').
-attack_description('Malicious Logic Insertion into Product Software via Configuration Management Manipulation',['Software in development phase','Sofware in deployment phase']).
+attack('Malicious Logic Insertion Into Product Software Via Configuration Management Manipulation').
+attack_type('Malicious Logic Insertion Into Product Software Via Configuration Management Manipulation','Software').
+mitigations('Malicious Logic Insertion Into Product Software Via Configuration Management Manipulation', 'Assess Software and software components during development and prior to deployment to ensure that they function as intended and without any malicious functionality').
+mitigations('Malicious Logic Insertion Into Product Software Via Configuration Management Manipulation', 'Leverage anti virus products to detect and quarantine software with known virus').
+attack_description('Malicious Logic Insertion Into Product Software Via Configuration Management Manipulation',['Software in development phase','Sofware in deployment phase']).
 
-attack('Malicious Logic Insertion into Product Software via Inclusion of 3rd Party Component Dependency').
-attack_type('Malicious Logic Insertion into Product Software via Inclusion of 3rd Party Component Dependency','Software').
-mitigations('Malicious Logic Insertion into Product Software via Inclusion of 3rd Party Component Dependency', 'Assess Software and software components during development and prior to deployment to ensure that they function as intended and without any malicious functionality').
-attack_description('Malicious Logic Insertion into Product Software via Inclusion of 3rd Party Component Dependency',['Software in development phase','Sofware in deployment phase']).
+attack('Malicious Logic Insertion Into Product Software Via Inclusion Of 3rd Party Component Dependency').
+attack_type('Malicious Logic Insertion Into Product Software Via Inclusion Of 3rd Party Component Dependency','Software').
+mitigations('Malicious Logic Insertion Into Product Software Via Inclusion Of 3rd Party Component Dependency', 'Assess Software and software components during development and prior to deployment to ensure that they function as intended and without any malicious functionality').
+attack_description('Malicious Logic Insertion Into Product Software Via Inclusion Of 3rd Party Component Dependency',['Software in development phase','Sofware in deployment phase']).
 
 
 
-attack('Infiltration of Software Development Environment').
-attack_type('Infiltration of Software Development Environment','Software'). 
-attack_description('Infiltration of Software Development Environment',['Software in development phase','Sofware in deployment phase','Physical access required','Recently received updates']).
+attack('Infiltration Of Software Development Environment').
+attack_type('Infiltration Of Software Development Environment','Software').
+attack_description('Infiltration Of Software Development Environment',['Software in development phase','Sofware in deployment phase','Physical access required','Recently received updates']).
 
 
 attack('Hardware Component Substitution During Baselining').
@@ -119,9 +119,9 @@ attack_type('Altered Installed BIOS','Software').
 attack_description('Altered Installed BIOS',['Recently received updates']).
 
 
-attack('Infiltration of Hardware Development Environment').
-attack_type('Infiltration of Hardware Development Environment','Hardware').
-attack_description('Infiltration of Hardware Development Environment',['Physical access required']).
+attack('Infiltration Of Hardware Development Environment').
+attack_type('Infiltration Of Hardware Development Environment','Hardware').
+attack_description('Infiltration Of Hardware Development Environment',['Physical access required']).
 
 attack('Open Source Libraries Altered').
 attack_type('Open Source Libraries Altered','Software').
@@ -140,19 +140,19 @@ attack_type('Design Alteration','Software').
 mitigations('Design Alteration',' Assess design documentation during development and prior to deployment to ensure that they function as intended and without any malicious functionality').
 mitigations('Design Alteration', 'Ensure that design documentation is saved in a secure location and has proper access controls set in place to avoid unnecessary modification').
 
-attack('Documentation Alteration to Circumvent Dial down').
-attack_type('Documentation Alteration to Circumvent Dial down','Software').
-attack_description('Documentation Alteration to Circumvent Dial down',['Altered documentation','Sofware in deployment phase']).
+attack('Documentation Alteration To Circumvent Dial down').
+attack_type('Documentation Alteration To Circumvent Dial down','Software').
+attack_description('Documentation Alteration To Circumvent Dial down',['Altered documentation','Sofware in deployment phase']).
 
 
-attack('Documentation Alteration to Produce Under performing Systems').
+attack('Documentation Alteration To Produce Under Performing Systems').
 attack_type('Documentation Alteration to Produce Under performing Systems','Software').
 attack_description('Documentation Alteration to Produce Under performing Systems',['Altered documentation','Sofware in deployment phase']).
 
 
 
-attack('Documentation Alteration to Cause Errors in System Design').
-attack_type('Documentation Alteration to Cause Errors in System Design','Software').
+attack('Documentation Alteration To Cause Errors In System Design').
+attack_type('Documentation Alteration To Cause Errors In System Design','Software').
 
 attack('Hardware Design Specifications Are Altered').
 attack_type('Hardware Design Specifications Are Altered','Hardware').
@@ -167,7 +167,7 @@ attack_description('Rogue Integration Procedures',['Physical access required','S
 
 attack('Hardware Integrity Attack').
 attack_type('Hardware Integrity Attack','Hardware').
-attack_description('Rogue Integration Procedures',['Physical access required']).
+attack_description('Hardware Integrity Attack',['Physical access required']).
 
 
 attack('Physically Hacking Hardware').
@@ -204,10 +204,10 @@ attack('Infected Software').
 attack_type('Infected Software','Software').
 mitigations('Infected Software', 'Leverage anti-virus products to detect and quarantine software with known virus.').
 
-attack('Embed Virus into DLL').
-attack_type('Embed Virus into DLL','Software').
-mitigations('Embed Virus into DLL', 'Leverage anti-virus products to detect and quarantine software with known virus.').
-attack_description('Embed Virus into DLL',['Recently used removable media']).
+attack('Embed Virus Into DLL').
+attack_type('Embed Virus Into DLL','Software').
+mitigations('Embed Virus Into DLL', 'Leverage anti-virus products to detect and quarantine software with known virus.').
+attack_description('Embed Virus Into DLL',['Recently used removable media']).
 
 attack('Infected Hardware').
 attack_type('Infected Hardware','Hardware').
