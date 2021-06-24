@@ -5,12 +5,21 @@ import com.ugos.jiprolog.engine.JIPEngine;
 import com.ugos.jiprolog.engine.JIPQuery;
 import com.ugos.jiprolog.engine.JIPTerm;
 import com.ugos.jiprolog.engine.JIPVariable;
+import dto.AttackDTO;
+import dto.AttackSymptomsDTO;
+import dto.FuzzyInputDto;
+import dto.NewAttackDto;
+import model.Attack;
 import dto.*;
 import model.AttackCaseDescription;
 import net.sourceforge.jFuzzyLogic.FIS;
+import org.apache.jena.query.*;
+import org.apache.jena.rdf.model.Literal;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ucm.gaia.jcolibri.cbraplications.StandardCBRApplication;
 import ucm.gaia.jcolibri.cbrcore.CBRQuery;
@@ -33,17 +42,252 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+
+import org.apache.jena.update.UpdateExecutionFactory;
+import org.apache.jena.update.UpdateFactory;
+import org.apache.jena.update.UpdateProcessor;
+import org.apache.jena.update.UpdateRequest;
+
 @SpringBootApplication
 @RestController
 public class DemoApplication {
     Map<String, JIPQuery> map1 = new HashMap<String,JIPQuery>();
     public static AttackDTO attackDTO;
+    private static final String UPDATE_URL = "http://localhost:3030/iz_7/update";
+    private static final String QUERY_URL = "http://localhost:3030/iz_7/sparql";
+
+    private static final String PREFIX = "PREFIX sca: <http://www.supply_chain_attack.com/sca#> PREFIX xsd: <http://w3.org/2001/XMLSchema#>";
 
 
 
     public static void main(String[] args) {
         SpringApplication.run(DemoApplication.class, args);
 
+    }
+
+    @PostMapping("/add-attack")
+    public ResponseEntity<Boolean> addAttack(@RequestBody NewAttackDto newAttackDto) {
+
+        if(existAttackWithSameName(newAttackDto.getName())){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        try{
+            String insertString = PREFIX + " INSERT DATA {"
+                    + " sca:" + newAttackDto.getName() + "attack a sca:Attack; "
+                    + " sca:name " + "\"" + newAttackDto.getName() + "\"^^xsd:string; "
+                    + " sca:description " + "\"" + newAttackDto.getDescription() + "\"^^xsd:string; "
+                    + " sca:domain " + "\"" + newAttackDto.getDomain() + "\"^^xsd:string; "
+                    + " sca:typical_severity " + "\"" + newAttackDto.getTypical_severity() + "\"^^xsd:string; "
+                    + " sca:likelihood_of_attack " + "\"" + newAttackDto.getLikelihood_of_attack() + "\"^^xsd:string; "
+                    + " sca:mitigations " + "\"" + newAttackDto.getMitigations() + "\"^^xsd:string; "
+                    + " sca:weaknesses " + "\"" + newAttackDto.getWeaknesses() + "\"^^xsd:string; "
+                    + " sca:prerequisites " + "\"" + newAttackDto.getPrerequisites() + "\"^^xsd:string . }";
+
+
+            UpdateRequest updateRequest = UpdateFactory.create(insertString);
+            UpdateProcessor updateProcessor = UpdateExecutionFactory.createRemote(updateRequest, UPDATE_URL);
+            updateProcessor.execute();
+
+            return  new ResponseEntity<>(HttpStatus.CREATED);
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+        }
+
+    }
+
+    @GetMapping("/get-all-attacks")
+    public ResponseEntity<List<NewAttackDto>> getAllAttack() {
+
+        List<NewAttackDto> attackDtos = new ArrayList<>();
+        String selectString = PREFIX + "SELECT ?name ?description ?domain ?typical_severity ?likelihood_of_attack ?mitigations ?weaknesses ?prerequisites " + "WHERE { "
+                + "    ?attack a sca:Attack;" + "" +
+                " sca:name ?name;" +
+                " sca:description ?description;" +
+                " sca:domain ?domain;" +
+                " sca:typical_severity ?typical_severity;" +
+                " sca:likelihood_of_attack ?likelihood_of_attack;" +
+                " sca:mitigations ?mitigations;" +
+                " sca:weaknesses ?weaknesses;" +
+                " sca:prerequisites ?prerequisites . "   + "}";
+        Query query = QueryFactory.create(selectString);
+        try {
+            QueryExecution exec = QueryExecutionFactory.sparqlService(QUERY_URL, query);
+            ResultSet results = exec.execSelect();
+            ResultSetRewindable resultSetRewindable = ResultSetFactory.copyResults(results);
+            exec.close();
+            while (resultSetRewindable.hasNext()) {
+
+                QuerySolution solution = resultSetRewindable.nextSolution();
+                Literal name = solution.getLiteral("name");
+                Literal description = solution.getLiteral("description");
+                Literal domain= solution.getLiteral("domain");
+                Literal typical_severity= solution.getLiteral("typical_severity");
+                Literal likelihood_of_attack= solution.getLiteral("likelihood_of_attack");
+                Literal mitigations= solution.getLiteral("mitigations");
+                Literal weaknesses= solution.getLiteral("weaknesses");
+                Literal prerequisites= solution.getLiteral("prerequisites");
+
+
+                NewAttackDto attack = new NewAttackDto();
+                attack.setName(name.getString());
+                attack.setDescription(description.getString());
+                attack.setDomain(domain.getString());
+                attack.setTypical_severity(typical_severity.getString());
+                attack.setLikelihood_of_attack(likelihood_of_attack.getString());
+                attack.setMitigations(mitigations.getString());
+                attack.setWeaknesses(weaknesses.getString());
+                attack.setPrerequisites(prerequisites.getString());
+
+
+
+                attackDtos.add(attack);
+
+            }
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+            return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST) ;
+
+        }
+
+        return new ResponseEntity<>(attackDtos,HttpStatus.OK) ;
+    }
+
+    private Boolean existAttackWithSameName(String attackName) {
+
+        String selectString = PREFIX + "SELECT ?name " + "WHERE { "
+                + " ?attack a sca:Attack;" + "" +
+                " sca:name ?name . " + "}";
+        Query query = QueryFactory.create(selectString);
+        try {
+            QueryExecution exec = QueryExecutionFactory.sparqlService(QUERY_URL, query);
+            ResultSet results = exec.execSelect();
+            ResultSetRewindable resultSetRewindable = ResultSetFactory.copyResults(results);
+            exec.close();
+            while (resultSetRewindable.hasNext()) {
+
+                QuerySolution solution = resultSetRewindable.nextSolution();
+                Literal name = solution.getLiteral("name");
+                String stringName = name.toString().split("\\^\\^")[0];
+                if(stringName.equals(attackName)){
+                    return true;
+                }
+            }
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+        }
+
+        return false;
+    }
+
+    private Attack getAttackByName(String attackName){
+        String selectString = PREFIX + "SELECT ?name ?description ?domain ?typical_severity ?likelihood_of_attack ?mitigations ?weaknesses ?prerequisites " + "WHERE { "
+                + "    ?attack a sca:Attack;" + "" +
+                " sca:name ?name;" +
+                " sca:description ?description;" +
+                " sca:domain ?domain;" +
+                " sca:typical_severity ?typical_severity;" +
+                " sca:likelihood_of_attack ?likelihood_of_attack;" +
+                " sca:mitigations ?mitigations;" +
+                " sca:weaknesses ?weaknesses;" +
+                " sca:prerequisites ?prerequisites . "   + "}";
+        Query query = QueryFactory.create(selectString);
+        try {
+            QueryExecution exec = QueryExecutionFactory.sparqlService(QUERY_URL, query);
+            ResultSet results = exec.execSelect();
+            ResultSetRewindable resultSetRewindable = ResultSetFactory.copyResults(results);
+            exec.close();
+            while (resultSetRewindable.hasNext()) {
+
+                QuerySolution solution = resultSetRewindable.nextSolution();
+                Literal name = solution.getLiteral("name");
+                String stringName = name.toString().split("\\^\\^")[0];
+                if(stringName.equals(attackName)){
+
+                    Literal description = solution.getLiteral("description");
+                    Literal domain= solution.getLiteral("domain");
+                    Literal typical_severity= solution.getLiteral("typical_severity");
+                    Literal likelihood_of_attack= solution.getLiteral("likelihood_of_attack");
+                    Literal mitigations= solution.getLiteral("mitigations");
+                    Literal weaknesses= solution.getLiteral("weaknesses");
+                    Literal prerequisites= solution.getLiteral("prerequisites");
+
+
+                    Attack attack = new Attack();
+                    attack.setName(name.getString());
+                    attack.setDescription(description.getString());
+                    attack.setDomain(domain.getString());
+                    attack.setTypical_severity(typical_severity.getString());
+                    attack.setLikelihood_of_attack(likelihood_of_attack.getString());
+                    attack.setMitigations(mitigations.getString());
+                    attack.setWeaknesses(weaknesses.getString());
+                    attack.setPrerequisites(prerequisites.getString());
+
+
+                    return attack;
+                }
+            }
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+        }
+
+        return null;
+    }
+
+    @PutMapping("/update-attack")
+    public ResponseEntity<Boolean> updateAttack(@RequestBody NewAttackDto newAttackDto){
+        try{
+
+            Attack attack = getAttackByName(newAttackDto.getName());
+            if (attack != null){
+                String deleteString = PREFIX + " DELETE DATA {"
+                        + " sca:" + attack.getName() + "attack a sca:Attack; "
+                        + " sca:name " + "\"" + attack.getName() + "\"^^xsd:string; "
+                        + " sca:description " + "\"" + attack.getDescription() + "\"^^xsd:string; "
+                        + " sca:domain " + "\"" + attack.getDomain() + "\"^^xsd:string; "
+                        + " sca:typical_severity " + "\"" + attack.getTypical_severity() + "\"^^xsd:string; "
+                        + " sca:likelihood_of_attack " + "\"" + attack.getLikelihood_of_attack() + "\"^^xsd:string; "
+                        + " sca:mitigations " + "\"" + attack.getMitigations() + "\"^^xsd:string; "
+                        + " sca:weaknesses " + "\"" + attack.getWeaknesses() + "\"^^xsd:string; "
+                        + " sca:prerequisites " + "\"" + attack.getPrerequisites() + "\"^^xsd:string . }";
+
+                String insertString = PREFIX + " INSERT DATA {"
+                        + " sca:" + newAttackDto.getName() + "attack a sca:Attack; "
+                        + " sca:name " + "\"" + newAttackDto.getName() + "\"^^xsd:string; "
+                        + " sca:description " + "\"" + newAttackDto.getDescription() + "\"^^xsd:string; "
+                        + " sca:domain " + "\"" + newAttackDto.getDomain() + "\"^^xsd:string; "
+                        + " sca:typical_severity " + "\"" + newAttackDto.getTypical_severity() + "\"^^xsd:string; "
+                        + " sca:likelihood_of_attack " + "\"" + newAttackDto.getLikelihood_of_attack() + "\"^^xsd:string; "
+                        + " sca:mitigations " + "\"" + newAttackDto.getMitigations() + "\"^^xsd:string; "
+                        + " sca:weaknesses " + "\"" + newAttackDto.getWeaknesses() + "\"^^xsd:string; "
+                        + " sca:prerequisites " + "\"" + newAttackDto.getPrerequisites() + "\"^^xsd:string . }";
+
+
+                UpdateRequest deleteRequest = UpdateFactory.create(deleteString);
+                UpdateProcessor deleteProcessor = UpdateExecutionFactory.createRemote(deleteRequest, UPDATE_URL);
+                deleteProcessor.execute();
+
+                UpdateRequest insertRequest = UpdateFactory.create(insertString);
+                UpdateProcessor insertProcessor = UpdateExecutionFactory.createRemote(insertRequest, UPDATE_URL);
+                insertProcessor.execute();
+
+
+                return  new ResponseEntity<>(HttpStatus.OK);
+            }
+
+            return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+        }
     }
 
     @PutMapping("/fuzzy")
@@ -268,6 +512,8 @@ public class DemoApplication {
             }
         }
     }
+
+
 
     private void PrintAllInputNodes(List<Node> nodeList){
         for (Node node : nodeList) {
