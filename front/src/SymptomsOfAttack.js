@@ -14,6 +14,8 @@ import {
 
 import axios from "axios";
 
+import AttackDescriptionAndMitigations from "./AttackDescriptionAndMitigations";
+
 const SymptomsOfAttack = () => {
   const [alteredDocumentation, setAlteredDocumentation] = useState("false");
   const [errorsInSoftware, setErrorsInSoftware] = useState("false");
@@ -37,8 +39,11 @@ const SymptomsOfAttack = () => {
   const [type, setType] = useState("hardware");
 
   const [attack, setAttack] = useState();
+  const [mitigations, setMitigations] = useState([]);
 
   const findAttackForSymptoms = () => {
+    setAttack(null);
+    setMitigations([]);
     axios
       .put("/findAttackForSymptoms", {
         alteredDocumentation: alteredDocumentation === "true" ? true : false,
@@ -346,7 +351,13 @@ const SymptomsOfAttack = () => {
         <>
           <Grid container>
             <Grid item xs={2} />
-            <Grid item xs={6}></Grid>
+            <Grid item xs={8}>
+              <AttackDescriptionAndMitigations
+                attack={attack}
+                mitigations={mitigations}
+                setMitigations={setMitigations}
+              />
+            </Grid>
             <Grid item xs={2} />
           </Grid>
         </>
