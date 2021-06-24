@@ -17,10 +17,9 @@ import org.apache.jena.query.*;
 import org.apache.jena.rdf.model.Literal;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import ucm.gaia.jcolibri.cbraplications.StandardCBRApplication;
 import ucm.gaia.jcolibri.cbrcore.CBRQuery;
 import ucm.gaia.jcolibri.method.retrieve.RetrievalResult;
@@ -62,6 +61,56 @@ public class DemoApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(DemoApplication.class, args);
+        try{
+            NewAttackDto newAttackDto = new NewAttackDto();
+            newAttackDto.setName("Napad1");
+            newAttackDto.setDescription("Description1");
+            newAttackDto.setDomain("BOTH");
+            newAttackDto.setTypical_severity("LOW");
+            newAttackDto.setLikelihood_of_attack("LOW");
+            newAttackDto.setMitigations("Mitigations1");
+            newAttackDto.setWeaknesses("Weaknesses1");
+            newAttackDto.setPrerequisites("Prerequisites1");
+
+
+            RestTemplate restTemplate = new RestTemplate();
+            String url = "http://localhost:8080/add-attack";
+
+            // create headers
+            HttpHeaders headers = new HttpHeaders();
+            // set content-type header
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            // set accept header
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+
+            // create a map for post parameters
+
+            // build the request
+            HttpEntity<NewAttackDto> entity = new HttpEntity<>(newAttackDto, headers);
+
+            // send POST request
+            restTemplate.postForEntity(url, entity, NewAttackDto.class);
+
+            NewAttackDto newAttackDto2 = new NewAttackDto();
+            newAttackDto2.setName("Napad2");
+            newAttackDto2.setDescription("Description2");
+            newAttackDto2.setDomain("BOTH");
+            newAttackDto2.setTypical_severity("LOW");
+            newAttackDto2.setLikelihood_of_attack("LOW");
+            newAttackDto2.setMitigations("Mitigations2");
+            newAttackDto2.setWeaknesses("Weaknesses2");
+            newAttackDto2.setPrerequisites("Prerequisites2");
+
+            // build the request
+            HttpEntity<NewAttackDto> entity2 = new HttpEntity<>(newAttackDto2, headers);
+
+            // send POST request
+            restTemplate.postForEntity(url, entity2, NewAttackDto.class);
+
+        }catch (Exception e){
+
+        }
+
 
     }
 
